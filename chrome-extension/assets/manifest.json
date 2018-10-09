@@ -1,0 +1,27 @@
+{
+    "name": "MtG Deckbuild Tools",
+    "version": "0.1",
+    "description": "MtG Deckbuild Tools is made for personal use.\n\nBuild: [TIMESTAMP]",
+    "content_scripts": [
+        {
+            "matches": [
+                "https://scryfall.com/*"
+            ],
+            "js": [
+                "scryfall-content.js"
+            ],
+            "css": [
+                "scryfall-content.css"
+            ],
+            "run_at": "document_end"
+        }
+    ],
+    "permissions": [
+        "https://scryfall.com/*"
+    ],
+    "web_accessible_resources": [
+        "scryfall-content.css",
+        "card-placeholder.jpeg"
+    ],
+    "manifest_version": 2
+}

@@ -1,0 +1,41 @@
+.card-grid-item {
+    z-index: 1;
+}
+
+.mtg-deck-tools.custom-card-grid-item {
+    page-break-after: auto;
+    page-break-before: auto;
+    page-break-inside: avoid;
+    position: relative;
+    display: block;
+    float: left;
+    width: 42.75%;
+    margin: 0 3.6% 2.5% 3.6%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    border-radius: 4.75% / 3.5%;
+    text-align: center;
+}
+
+.mtg-deck-tools.custom-card-grid-item.js-focus,.mtg-deck-tools.custom-card-grid-item:focus {
+    -webkit-box-shadow: 0 0 0 2px #5822AC;
+    box-shadow: 0 0 0 2px #5822AC;
+    -webkit-border-radius: 4.75% / 3.5%;
+    border-radius: 4.75% / 3.5%;
+    outline: none
+}
+
+@media screen and (min-width: 660px) {
+    .mtg-deck-tools.custom-card-grid-item {
+        width:30.5%;
+        margin: 0 1.25% 1.25% 1.25%
+    }
+}
+
+@media screen and (min-width: 920px) {
+    .mtg-deck-tools.custom-card-grid-item {
+        width:22.5%;
+        margin: 0 1.25% 1.25% 1.25%;
+    }
+}

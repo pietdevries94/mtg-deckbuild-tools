@@ -1,0 +1,15 @@
+{
+  "name": "mtg-deckbuild-tools",
+  "version": "1.0.0",
+  "author": "Piet de Vries",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "@types/chrome": "^0.0.74",
+    "typescript": "^3.1.1"
+  },
+  "scripts": {
+    "build": "rm -r dist; tsc && cp -r assets/* dist/ && yarn set-version",
+    "set-version": "TIMESTAMP=$(date +%Y-%m-%d\\ %T); sed -i -e \"s/\\[TIMESTAMP\\]/$TIMESTAMP/g\" dist/manifest.json"
+  }
+}

@@ -1,0 +1,12 @@
+{
+    "saveAndRun": {
+        "commands": [
+            {
+                "match": ".*",
+                "cmd": "yarn build",
+                "useShortcut": false,
+                "silent": false
+            }
+        ]
+    }
+}
