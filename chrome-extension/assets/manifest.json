@@ -8,10 +8,10 @@
                 "https://scryfall.com/*"
             ],
             "js": [
-                "scryfall-content.js"
+                "scryfall/content.js"
             ],
             "css": [
-                "scryfall-content.css"
+                "css/scryfall.css"
             ],
             "run_at": "document_end"
         }
@@ -20,8 +20,8 @@
         "https://scryfall.com/*"
     ],
     "web_accessible_resources": [
-        "scryfall-content.css",
-        "card-placeholder.jpeg"
+        "css/*",
+        "images/*"
     ],
     "manifest_version": 2
 }

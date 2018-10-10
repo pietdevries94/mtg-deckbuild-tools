@@ -55,7 +55,7 @@ function gridView() {
                 const placeholder = document.createElement('a')
                 placeholder.className = 'mtg-deck-tools card-grid-item'
                 const image = document.createElement('img')
-                image.src = chrome.runtime.getURL('card-placeholder.jpeg')
+                image.src = chrome.runtime.getURL('images/card-placeholder.jpeg')
                 image.className = 'card ons border-black'
                 placeholder.appendChild(image)
                 card.after(placeholder)
