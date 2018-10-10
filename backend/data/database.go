@@ -1,4 +1,4 @@
-package database
+package data
 
 import (
 	"database/sql"
@@ -9,7 +9,7 @@ import (
 
 var db *sql.DB
 
-func Init() {
+func initDB() {
 	var err error
 	db, err = sql.Open("sqlite3", "file:live.db?cache=shared")
 	util.PanicOnErr(err)

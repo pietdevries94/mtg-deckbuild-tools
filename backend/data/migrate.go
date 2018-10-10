@@ -1,4 +1,4 @@
-package database
+package data
 
 import (
 	"database/sql"
@@ -42,6 +42,17 @@ func migrate(db *sql.DB) {
 
 func getMigrations() []string {
 	return []string{
-		`CREATE TABLE entries(scryfall_id TEXT)`,
+		`CREATE TABLE cards(
+			scryfall_id TEXT PRIMARY KEY,
+			set_code TEXT,
+			set_number INT,
+			name TEXT,
+			oracle_id INT,
+			updated_at DATETIME
+		)`,
+		`CREATE TABLE entries(
+			scryfall_id TEXT,
+			FOREIGN KEY(scryfall_id) REFERENCES cards(scryfall_id)
+		)`,
 	}
 }

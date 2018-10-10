@@ -1,3 +1,7 @@
+github.com/BlueMonday/go-scryfall v0.0.0-20180923055828-b4e19ac4794a h1:Tk/e40S1yUjARsnE9W+O01dwBjxseYDmX7t/YCDSHt0=
+github.com/BlueMonday/go-scryfall v0.0.0-20180923055828-b4e19ac4794a/go.mod h1:XBl63AwpOAYaTarbSEnCzMALRtF5OfQYUjv6ViiIE68=
+github.com/google/go-querystring v1.0.0 h1:Xkwi/a1rcvNg1PPYe5vI8GbeBY/jrVuDX5ASuANWTrk=
+github.com/google/go-querystring v1.0.0/go.mod h1:odCYkC5MyYFN7vkCjXpyrEuKhc/BUO6wN/zVPAxq5ck=
 github.com/labstack/echo v3.2.1+incompatible h1:J2M7YArHx4gi8p/3fDw8tX19SXhBCoRpviyAZSN3I88=
 github.com/labstack/echo v3.2.1+incompatible/go.mod h1:0INS7j/VjnFxD4E2wkz67b8cVwCLbBmJyDaka6Cmk1s=
 github.com/labstack/gommon v0.2.7 h1:2qOPq/twXDrQ6ooBGrn3mrmVOC+biLlatwgIu8lbzRM=
@@ -10,9 +14,12 @@ github.com/mattn/go-sqlite3 v1.9.0 h1:pDRiWfl+++eC2FEFRy6jXmQlvp4Yh3z1MJKg4UeYM/
 github.com/mattn/go-sqlite3 v1.9.0/go.mod h1:FPy6KqzDD04eiIsT53CuJW3U88zkxoIYsOqkbpncsNc=
 github.com/pietdevries94/mtg-deckbuild-tools v0.0.0-20181010090424-e7526ad85a03 h1:xRDIAsPNZtvszuKJRBxPdML7MI3cu2TTwKiVHFZoIjk=
 github.com/pietdevries94/mtg-deckbuild-tools v0.0.0-20181010091837-dbf1dbf7080b h1:MbVuatX/MU3Afkthgy0L+QUKzb0y4iR/1sh1/0Twtl4=
+github.com/pietdevries94/mtg-deckbuild-tools v0.0.0-20181010103247-7b211d990085 h1:W19XvimrrGIrBiPXdWDiB4zOq07zcXj5g6Bl7tc2yvU=
 github.com/valyala/bytebufferpool v1.0.0 h1:GqA5TC/0021Y/b9FG4Oi9Mr3q7XYx6KllzawFIhcdPw=
 github.com/valyala/bytebufferpool v1.0.0/go.mod h1:6bBcMArwyJ5K/AmCkWv1jt77kVWyCJ6HpOuEn7z0Csc=
 github.com/valyala/fasttemplate v0.0.0-20170224212429-dcecefd839c4 h1:gKMu1Bf6QINDnvyZuTaACm9ofY+PRh+5vFz4oxBZeF8=
 github.com/valyala/fasttemplate v0.0.0-20170224212429-dcecefd839c4/go.mod h1:50wTf68f99/Zt14pr046Tgt3Lp2vLyFZKzbFXTOabXw=
 golang.org/x/crypto v0.0.0-20181009213950-7c1a557ab941 h1:qBTHLajHecfu+xzRI9PqVDcqx7SdHj9d4B+EzSn3tAc=
 golang.org/x/crypto v0.0.0-20181009213950-7c1a557ab941/go.mod h1:6SG95UA2DQfeDnfUPMdvaQW0Q7yPrPDi9nlGo2tz2b4=
+google.golang.org/api v0.0.0-20181010000435-ce4acf611b39 h1:Qxdv5Zw5OgySF47vBBv/1lL4YR0yWED6WQnaJR0/oNk=
+google.golang.org/api v0.0.0-20181010000435-ce4acf611b39/go.mod h1:4mhQ8q/RsB7i+udVvVy5NUi08OU8ZlA0gRVgrF7VFY0=
