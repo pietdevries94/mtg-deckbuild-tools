@@ -1,9 +1,8 @@
-function gridView() {
+export default () => {
     const oldElements = document.getElementsByClassName('mtg-deck-tools')
     while (oldElements[0]) {
         oldElements[0].parentNode!.removeChild(oldElements[0]);
     }
-
 
     const cardGridInners = document.getElementsByClassName('card-grid-inner')
     if (cardGridInners.length === 0) {
@@ -63,6 +62,3 @@ function gridView() {
         }
     }
 }
-
-gridView()
-window.addEventListener("resize", gridView);

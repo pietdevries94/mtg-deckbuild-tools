@@ -5,11 +5,16 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
-    "@types/chrome": "^0.0.74",
-    "typescript": "^3.1.1"
+    "@types/chrome": "^0.0.74"
   },
   "scripts": {
-    "build": "rm -r dist; tsc && cp -r assets/* dist/ && yarn set-version",
+    "build": "rm -r dist; webpack --mode production && cp -r assets/* dist/ && yarn set-version",
     "set-version": "TIMESTAMP=$(date +%Y-%m-%d\\ %T); sed -i -e \"s/\\[TIMESTAMP\\]/$TIMESTAMP/g\" dist/manifest.json"
+  },
+  "devDependencies": {
+    "ts-loader": "^5.2.1",
+    "typescript": "^3.1.2",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.2"
   }
 }
