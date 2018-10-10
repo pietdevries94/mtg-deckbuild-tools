@@ -1,3 +1,3 @@
-import content from '../ts/scryfall/content'
+import content from '@/scryfall/content'
 
 content()
