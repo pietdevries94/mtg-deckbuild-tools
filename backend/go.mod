@@ -1,7 +1,6 @@
 module github.com/pietdevries94/mtg-deckbuild-tools/backend
 
 require (
-	http
 	github.com/labstack/echo v3.2.1+incompatible
 	github.com/labstack/gommon v0.2.7 // indirect
 	github.com/mattn/go-colorable v0.0.9 // indirect
