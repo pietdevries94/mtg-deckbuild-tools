@@ -1,18 +1,14 @@
 package main
 
 import (
-	"net/http"
-
 	"github.com/labstack/echo"
-	"github.com/pietdevries94/mtg-deckbuild-tools/backend/data/database"
+	"github.com/pietdevries94/mtg-deckbuild-tools/backend/data"
 )
 
 func main() {
-	database.Init()
+	data.Init()
 
 	e := echo.New()
-	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
-	})
+	e.POST("/entry", postEntry)
 	e.Logger.Fatal(e.Start(":1323"))
 }

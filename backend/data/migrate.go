@@ -45,9 +45,9 @@ func getMigrations() []string {
 		`CREATE TABLE cards(
 			scryfall_id TEXT PRIMARY KEY,
 			set_code TEXT,
-			set_number INT,
+			set_number TEXT,
 			name TEXT,
-			oracle_id INT,
+			oracle_id TEXT,
 			updated_at DATETIME
 		)`,
 		`CREATE TABLE entries(
