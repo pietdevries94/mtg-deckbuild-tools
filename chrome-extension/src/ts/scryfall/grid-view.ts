@@ -38,10 +38,10 @@ const getGridInfo = (): gridInfo => {
     return result
 }
 
-const getCodeAndNumberFromAnchor = (card: HTMLAnchorElement): { code: string, number: number } => {
+const getCodeAndNumberFromAnchor = (card: HTMLAnchorElement): { code: string, number: string } => {
     const params = card.href.replace('https://scryfall.com/card/', '').split('/')
 
-    return { code: params[0], number: Number(params[1]) }
+    return { code: params[0], number: params[1] }
 }
 
 const getPlaceHolder = (): HTMLAnchorElement => {

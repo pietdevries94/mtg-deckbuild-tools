@@ -17,6 +17,7 @@
         }
     ],
     "permissions": [
+        "http://localhost:1323/*",
         "https://scryfall.com/*"
     ],
     "web_accessible_resources": [

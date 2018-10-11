@@ -5,7 +5,9 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
-    "@types/chrome": "^0.0.74"
+    "@types/axios": "^0.14.0",
+    "@types/chrome": "^0.0.74",
+    "axios": "^0.18.0"
   },
   "scripts": {
     "build": "rm -r dist; webpack --mode production && cp -r assets/* dist/ && yarn set-version",

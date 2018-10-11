@@ -11,6 +11,6 @@ func AddCardEntryBySetAndNumber(set, number string) error {
 	}
 
 	return UpsertEntry(Entry{
-		ScryfallID: c.ScryfallID,
+		OracleID: c.OracleID,
 	})
 }

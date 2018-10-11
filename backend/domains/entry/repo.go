@@ -7,8 +7,8 @@ import (
 func UpsertEntry(entry Entry) error {
 	db := data.GetDB()
 
-	q := `insert or replace into entries (scryfall_id) values (?)`
-	_, err := db.Exec(q, entry.ScryfallID)
+	q := `insert or replace into entries (oracle_id) values (?)`
+	_, err := db.Exec(q, entry.OracleID)
 
 	return err
 }

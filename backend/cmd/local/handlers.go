@@ -5,8 +5,16 @@ import (
 	"github.com/pietdevries94/mtg-deckbuild-tools/backend/domains/entry"
 )
 
+type postEntryData struct {
+	Set    string
+	Number string
+}
+
 func postEntry(c echo.Context) error {
-	err := entry.AddCardEntryBySetAndNumber(c.FormValue(`set`), c.FormValue(`number`))
+	d := postEntryData{}
+	c.Bind(&d)
+
+	err := entry.AddCardEntryBySetAndNumber(d.Set, d.Number)
 	if err != nil {
 		return err
 	}

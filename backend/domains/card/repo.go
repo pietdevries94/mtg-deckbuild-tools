@@ -2,6 +2,7 @@ package card
 
 import (
 	"context"
+	"database/sql"
 	"time"
 
 	scryfall "github.com/BlueMonday/go-scryfall"
@@ -27,7 +28,7 @@ func getCardBySetAndNumber(set, number string) (Card, error) {
 	card := Card{}
 	err := row.Scan(&card.ScryfallID, &card.SetCode, &card.SetNumber, &card.Name, &card.OracleID, &card.UpdatedAt)
 	if err != nil {
-		if err != nil {
+		if err != sql.ErrNoRows {
 			return card, err
 		}
 		ok = false
@@ -71,7 +72,7 @@ func updateCardCacheFromScryfall(scryfallID string) (Card, error) {
 func upsertSfCard(sfCard scryfall.Card) (Card, error) {
 	card := Card{
 		ScryfallID: sfCard.ID,
-		SetCode:    sfCard.SetName,
+		SetCode:    sfCard.Set,
 		SetNumber:  sfCard.CollectorNumber,
 		Name:       sfCard.Name,
 		OracleID:   sfCard.OracleID,

@@ -14,7 +14,7 @@ const createButton = (text: string): HTMLButtonElement => {
     return button
 }
 
-export default (code: string, number: number): HTMLDivElement => {
+export default (code: string, number: string): HTMLDivElement => {
     const buttonWrapper = createWrapper()
     const addButton = createButton('Save in list')
 

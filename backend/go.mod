@@ -2,6 +2,7 @@ module github.com/pietdevries94/mtg-deckbuild-tools/backend
 
 require (
 	github.com/BlueMonday/go-scryfall v0.0.0-20180923055828-b4e19ac4794a
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/google/go-querystring v1.0.0 // indirect
 	github.com/labstack/echo v3.2.1+incompatible
 	github.com/labstack/gommon v0.2.7 // indirect
