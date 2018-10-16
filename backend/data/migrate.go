@@ -54,5 +54,6 @@ func getMigrations() []string {
 			oracle_id TEXT,
 			FOREIGN KEY(oracle_id) REFERENCES cards(oracle_id)
 		)`,
+		`ALTER TABLE cards ADD thumbnail_url TEXT`,
 	}
 }

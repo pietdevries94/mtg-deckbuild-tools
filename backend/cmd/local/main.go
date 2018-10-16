@@ -13,6 +13,7 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.CORS())
 
+	e.GET("/card/set-number/:set/:number", getCardBySetAndNumber)
 	e.POST("/entry", postEntry)
 
 	e.Logger.Fatal(e.Start(":1323"))

@@ -54,7 +54,7 @@ func addCardCacheFromScryfallBySetAndNumber(set, number string) (Card, error) {
 		return Card{}, err
 	}
 
-	return upsertSfCard(sfCard)
+	return insertSfCard(sfCard)
 }
 
 func updateCardCacheFromScryfall(scryfallID string) (Card, error) {
@@ -66,23 +66,39 @@ func updateCardCacheFromScryfall(scryfallID string) (Card, error) {
 		return Card{}, err
 	}
 
-	return upsertSfCard(sfCard)
+	return updateSfCard(sfCard)
 }
 
-func upsertSfCard(sfCard scryfall.Card) (Card, error) {
-	card := Card{
-		ScryfallID: sfCard.ID,
-		SetCode:    sfCard.Set,
-		SetNumber:  sfCard.CollectorNumber,
-		Name:       sfCard.Name,
-		OracleID:   sfCard.OracleID,
-		UpdatedAt:  time.Now(),
-	}
+func insertSfCard(sfCard scryfall.Card) (Card, error) {
+	card := sfCardToCard(sfCard)
 
 	db := data.GetDB()
 
-	q := `insert or replace into cards (scryfall_id, set_code, set_number, name, oracle_id, updated_at) values (?, ?, ?, ?, ?, ?)`
+	q := `insert into cards (scryfall_id, set_code, set_number, name, oracle_id, updated_at) values (?, ?, ?, ?, ?, ?)`
 	_, err := db.Exec(q, card.ScryfallID, card.SetCode, card.SetNumber, card.Name, card.OracleID, card.UpdatedAt)
 
 	return card, err
+}
+
+func updateSfCard(sfCard scryfall.Card) (Card, error) {
+	card := sfCardToCard(sfCard)
+
+	db := data.GetDB()
+
+	q := `update cards set set_code = ?, set_number = ?, name = ?, oracle_id = ?, updated_at = ? where scryfall_id = ?`
+	_, err := db.Exec(q, card.SetCode, card.SetNumber, card.Name, card.OracleID, card.UpdatedAt, card.ScryfallID)
+
+	return card, err
+}
+
+func sfCardToCard(sfCard scryfall.Card) Card {
+	return Card{
+		ScryfallID:   sfCard.ID,
+		SetCode:      sfCard.Set,
+		SetNumber:    sfCard.CollectorNumber,
+		Name:         sfCard.Name,
+		OracleID:     sfCard.OracleID,
+		ThumbnailURL: sfCard.ImageURIs.Normal,
+		UpdatedAt:    time.Now(),
+	}
 }
