@@ -7,15 +7,22 @@
   "dependencies": {
     "@types/axios": "^0.14.0",
     "@types/chrome": "^0.0.74",
-    "axios": "^0.18.0"
+    "axios": "^0.18.0",
+    "vue": "^2.5.17",
+    "vue-property-decorator": "^7.2.0",
+    "vue-template-compiler": "^2.5.17"
   },
   "scripts": {
     "build": "rm -r dist; webpack --mode production && cp -r assets/* dist/ && yarn set-version",
     "set-version": "TIMESTAMP=$(date +%Y-%m-%d\\ %T); sed -i -e \"s/\\[TIMESTAMP\\]/$TIMESTAMP/g\" dist/manifest.json"
   },
   "devDependencies": {
+    "css-loader": "^1.0.0",
+    "node-sass": "^4.9.4",
+    "sass-loader": "^7.1.0",
     "ts-loader": "^5.2.1",
     "typescript": "^3.1.2",
+    "vue-loader": "^15.4.2",
     "webpack": "^4.20.2",
     "webpack-cli": "^3.1.2"
   }

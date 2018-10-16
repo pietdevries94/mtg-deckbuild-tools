@@ -1,4 +1,5 @@
 var path = require("path");
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 var env = {
     NODE_ENV: (process.env.NODE_ENV || "development"),
@@ -17,19 +18,43 @@ var options = {
     module: {
         rules: [
             {
-                test: /\.tsx?$/,
-                use: 'ts-loader',
-                exclude: /node_modules/
+                test: /\.ts$/,
+                loader: 'ts-loader',
+                exclude: /node_modules/,
+                options: { appendTsSuffixTo: [/\.vue$/] }
+            },
+            {
+                test: /\.vue$/,
+                loader: 'vue-loader'
+            },
+            {
+                test: /\.scss$/,
+                use: [
+                  'vue-style-loader',
+                  'css-loader',
+                  'sass-loader'
+                ]
+            },
+            {
+                test: /\.css$/,
+                use: [
+                  'vue-style-loader',
+                  'css-loader',
+                ]
             }
         ]
     },
     resolve: {
-        extensions: ['.ts', '.js'],
+        extensions: ['.ts', '.js', '.vue'],
         alias: {
             src: path.resolve(__dirname, 'src'),
             "@": path.resolve(__dirname, 'src', 'ts')
         }
-    }
+    },
+    plugins: [
+        // make sure to include the plugin!
+        new VueLoaderPlugin()
+    ]
 };
 
 if (env.NODE_ENV === "development") {
