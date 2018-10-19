@@ -45,7 +45,7 @@ export default class Modal extends Vue {
   padding: 20px;
   border: 1px solid #888;
   width: 700px;
-  height: 360px;
+  height: 390px;
 }
 
 .close {

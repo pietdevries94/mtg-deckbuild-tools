@@ -1,7 +1,11 @@
 import Vue from 'vue'
 import Base from './components/Base.vue'
+import Toasted from 'vue-toasted'
 
-export interface Card {
+// @ts-ignore
+Vue.use(Toasted)
+
+export interface CardIDs {
     set?: string
     number?: string
 }
@@ -17,7 +21,7 @@ const vueInstance = new Vue({
         Base,
         {
             props: {
-                currentCardIDs: <Card>{}
+                currentCardIDs: <CardIDs>{}
             },
         }
     ),

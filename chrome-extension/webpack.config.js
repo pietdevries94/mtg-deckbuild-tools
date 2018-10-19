@@ -30,16 +30,16 @@ var options = {
             {
                 test: /\.scss$/,
                 use: [
-                  'vue-style-loader',
-                  'css-loader',
-                  'sass-loader'
+                    'vue-style-loader',
+                    'css-loader',
+                    'sass-loader'
                 ]
             },
             {
                 test: /\.css$/,
                 use: [
-                  'vue-style-loader',
-                  'css-loader',
+                    'vue-style-loader',
+                    'css-loader',
                 ]
             }
         ]

@@ -9,8 +9,8 @@ import (
 	"github.com/pietdevries94/mtg-deckbuild-tools/backend/data"
 )
 
-func getCardBySetAndNumber(set, number string) (Card, error) {
-	db := data.GetDB()
+func getCardByScryfallID(scryfallID string) (Card, error) {
+	var db = data.GetDB()
 
 	q := `SELECT
 		scryfall_id,
@@ -18,7 +18,58 @@ func getCardBySetAndNumber(set, number string) (Card, error) {
 		set_number,
 		name,
 		oracle_id,
-		updated_at
+		updated_at,
+		thumbnail_url
+	FROM cards
+	WHERE scryfall_id = ?
+	ORDER BY updated_at desc
+	LIMIT 1;`
+	row := db.QueryRow(q, scryfallID)
+
+	ok := true
+	card := Card{}
+	err := row.Scan(&card.ScryfallID, &card.SetCode, &card.SetNumber, &card.Name, &card.OracleID, &card.UpdatedAt, &card.ThumbnailURL)
+	if err != nil {
+		if err != sql.ErrNoRows {
+			return card, err
+		}
+		ok = false
+	}
+
+	if !ok {
+		return addCardCacheFromScryfallByScryfallID(scryfallID)
+	}
+
+	if card.UpdatedAt.Before(time.Now().Add(-24 * time.Hour)) {
+		return updateCardCacheFromScryfall(card.ScryfallID)
+	}
+
+	return card, nil
+}
+
+func addCardCacheFromScryfallByScryfallID(scryfallID string) (Card, error) {
+	sfClient := data.GetScryfall()
+
+	ctx := context.Background()
+	sfCard, err := sfClient.GetCard(ctx, scryfallID)
+	if err != nil {
+		return Card{}, err
+	}
+
+	return insertSfCard(sfCard)
+}
+
+func getCardBySetAndNumber(set, number string) (Card, error) {
+	var db = data.GetDB()
+
+	q := `SELECT
+		scryfall_id,
+		set_code,
+		set_number,
+		name,
+		oracle_id,
+		updated_at,
+		thumbnail_url
 	FROM cards
 	WHERE set_code = ?
 	AND set_number = ?`
@@ -26,7 +77,7 @@ func getCardBySetAndNumber(set, number string) (Card, error) {
 
 	ok := true
 	card := Card{}
-	err := row.Scan(&card.ScryfallID, &card.SetCode, &card.SetNumber, &card.Name, &card.OracleID, &card.UpdatedAt)
+	err := row.Scan(&card.ScryfallID, &card.SetCode, &card.SetNumber, &card.Name, &card.OracleID, &card.UpdatedAt, &card.ThumbnailURL)
 	if err != nil {
 		if err != sql.ErrNoRows {
 			return card, err
@@ -70,23 +121,23 @@ func updateCardCacheFromScryfall(scryfallID string) (Card, error) {
 }
 
 func insertSfCard(sfCard scryfall.Card) (Card, error) {
+	var db = data.GetDB()
+
 	card := sfCardToCard(sfCard)
 
-	db := data.GetDB()
-
-	q := `insert into cards (scryfall_id, set_code, set_number, name, oracle_id, updated_at) values (?, ?, ?, ?, ?, ?)`
-	_, err := db.Exec(q, card.ScryfallID, card.SetCode, card.SetNumber, card.Name, card.OracleID, card.UpdatedAt)
+	q := `insert into cards (scryfall_id, set_code, set_number, name, oracle_id, updated_at, thumbnail_url) values (?, ?, ?, ?, ?, ?, ?)`
+	_, err := db.Exec(q, card.ScryfallID, card.SetCode, card.SetNumber, card.Name, card.OracleID, card.UpdatedAt, card.ThumbnailURL)
 
 	return card, err
 }
 
 func updateSfCard(sfCard scryfall.Card) (Card, error) {
+	var db = data.GetDB()
+
 	card := sfCardToCard(sfCard)
 
-	db := data.GetDB()
-
-	q := `update cards set set_code = ?, set_number = ?, name = ?, oracle_id = ?, updated_at = ? where scryfall_id = ?`
-	_, err := db.Exec(q, card.SetCode, card.SetNumber, card.Name, card.OracleID, card.UpdatedAt, card.ScryfallID)
+	q := `update cards set set_code = ?, set_number = ?, name = ?, oracle_id = ?, updated_at = ?, thumbnail_url = ?, where scryfall_id = ?`
+	_, err := db.Exec(q, card.SetCode, card.SetNumber, card.Name, card.OracleID, card.UpdatedAt, card.ThumbnailURL, card.ScryfallID)
 
 	return card, err
 }

@@ -51,8 +51,8 @@ func getMigrations() []string {
 			updated_at DATETIME
 		)`,
 		`CREATE TABLE entries(
-			oracle_id TEXT,
-			FOREIGN KEY(oracle_id) REFERENCES cards(oracle_id)
+			scryfall_id TEXT,
+			FOREIGN KEY(scryfall_id) REFERENCES cards(scryfall_id)
 		)`,
 		`ALTER TABLE cards ADD thumbnail_url TEXT`,
 	}

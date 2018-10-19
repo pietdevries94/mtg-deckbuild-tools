@@ -6,16 +6,11 @@ import (
 	"github.com/pietdevries94/mtg-deckbuild-tools/backend/domains/entry"
 )
 
-type postEntryData struct {
-	Set    string
-	Number string
-}
-
 func postEntry(c echo.Context) error {
-	d := postEntryData{}
-	c.Bind(&d)
+	payload := entry.AddEntryPayload{}
+	c.Bind(&payload)
 
-	err := entry.AddCardEntryBySetAndNumber(d.Set, d.Number)
+	err := entry.AddCardEntry(payload)
 	if err != nil {
 		return err
 	}

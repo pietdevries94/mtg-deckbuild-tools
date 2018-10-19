@@ -4,13 +4,13 @@ import (
 	"github.com/pietdevries94/mtg-deckbuild-tools/backend/domains/card"
 )
 
-func AddCardEntryBySetAndNumber(set, number string) error {
-	c, err := card.GetCardBySetAndNumber(set, number)
+func AddCardEntry(payload AddEntryPayload) error {
+	c, err := card.GetCardByScryfallID(payload.ScryfallID)
 	if err != nil {
 		return err
 	}
 
 	return UpsertEntry(Entry{
-		OracleID: c.OracleID,
+		ScryfallID: c.ScryfallID,
 	})
 }

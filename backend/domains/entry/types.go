@@ -1,5 +1,9 @@
 package entry
 
 type Entry struct {
-	OracleID string
+	ScryfallID string
+}
+
+type AddEntryPayload struct {
+	ScryfallID string `json:"scryfall_id"`
 }

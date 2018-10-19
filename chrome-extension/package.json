@@ -10,10 +10,12 @@
     "axios": "^0.18.0",
     "vue": "^2.5.17",
     "vue-property-decorator": "^7.2.0",
-    "vue-template-compiler": "^2.5.17"
+    "vue-template-compiler": "^2.5.17",
+    "vue-toasted": "^1.1.25"
   },
   "scripts": {
     "build": "rm -r dist; webpack --mode production && cp -r assets/* dist/ && yarn set-version",
+    "dev": "rm -r dist; mkdir dist && cp -r assets/* dist/ && yarn set-version && webpack --mode development --watch",
     "set-version": "TIMESTAMP=$(date +%Y-%m-%d\\ %T); sed -i -e \"s/\\[TIMESTAMP\\]/$TIMESTAMP/g\" dist/manifest.json"
   },
   "devDependencies": {
