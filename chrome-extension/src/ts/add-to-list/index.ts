@@ -3,7 +3,9 @@ import Base from './components/Base.vue'
 import Toasted from 'vue-toasted'
 
 // @ts-ignore
-Vue.use(Toasted)
+Vue.use(Toasted, {
+    duration: 5000
+})
 
 export interface CardIDs {
     set?: string

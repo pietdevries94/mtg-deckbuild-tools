@@ -18,6 +18,7 @@ import { CardInterface, getCardBySetAndNumber } from "../api";
 import Modal from "./Modal.vue";
 import CardPreview from "./CardPreview.vue";
 import EntryForm from "./EntryForm.vue";
+import { AxiosError } from "axios";
 
 @Component({
   components: { Modal, CardPreview, EntryForm }
@@ -30,16 +31,31 @@ export default class Base extends Vue {
   private currentCardIDs!: CardIDs;
 
   @Watch("currentCardIDs")
-  private onCurrentCardIDsChange(ids: CardIDs) {
-    this.getCurrentCardData(ids);
-    this.visible = true;
+  private async onCurrentCardIDsChange(ids: CardIDs) {
+    const success = await this.getCurrentCardData(ids);
+    if (success) {
+      this.visible = true;
+    }
   }
 
-  private getCurrentCardData(ids: CardIDs) {
+  private async getCurrentCardData(ids: CardIDs) {
     this.currentCard = this.createEmptyCard();
-    getCardBySetAndNumber(ids.set!, ids.number!).then(card => {
-      this.currentCard = card;
-    });
+    try {
+      this.currentCard = await getCardBySetAndNumber(ids.set!, ids.number!);
+      return true;
+    } catch (e) {
+      const error = <AxiosError>e;
+      let msg: string;
+      if (error.code == undefined) {
+        msg = "Backend is not running!";
+      } else {
+        msg = "Could not load card info due to an unknown error. :(";
+      }
+
+      this.$toasted.error(msg);
+
+      return false;
+    }
   }
 
   private createEmptyCard(): CardInterface {

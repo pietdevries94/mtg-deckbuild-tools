@@ -1,4 +1,4 @@
-import axios, { AxiosPromise } from 'axios'
+import axios, { AxiosError } from 'axios'
 
 export interface CardInterface {
     scryfall_id: string
@@ -15,12 +15,17 @@ export interface PostEntryPayload {
 }
 
 const client = axios.create({
-    baseURL: "http://localhost:1323"
+    baseURL: "http://localhost:1323",
+    timeout: 3000,
 })
 
 export async function getCardBySetAndNumber(set: string, number: string) {
-    const response = await client.get<CardInterface>("/card/set-number/" + set + "/" + number)
-    return response.data
+    try {
+        const response = await client.get<CardInterface>("/card/set-number/" + set + "/" + number)
+        return response.data
+    } catch (e) {
+        throw (e)
+    }
 }
 
 export function postEntry(payload: PostEntryPayload) {
