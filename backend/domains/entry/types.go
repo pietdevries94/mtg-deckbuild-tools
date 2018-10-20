@@ -1,9 +1,14 @@
 package entry
 
 type Entry struct {
-	ScryfallID string
+	ID         int      `json:"id"`
+	ScryfallID string   `json:"scryfall_id"`
+	ListID     int      `json:"list_id"`
+	Tags       []string `json:"tags"`
 }
 
 type AddEntryPayload struct {
-	ScryfallID string `json:"scryfall_id"`
+	ScryfallID string   `json:"scryfall_id"`
+	ListID     int      `json:"list_id"`
+	Tags       []string `json:"tags"`
 }

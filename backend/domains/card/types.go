@@ -1,6 +1,8 @@
 package card
 
-import "time"
+import (
+	"time"
+)
 
 type Card struct {
 	ScryfallID   string    `json:"scryfall_id"`

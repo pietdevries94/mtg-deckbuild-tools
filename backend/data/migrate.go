@@ -29,13 +29,16 @@ func migrate(db *sql.DB) {
 	util.PanicOnErr(err)
 
 	migrations := getMigrations()
+	start := 0
 	if lastID >= 0 && len(migrations) > lastID {
-		migrations = migrations[lastID+1:]
+		start = lastID + 1
 	}
-	for id, migration := range migrations {
-		_, err := db.Exec(migration)
+
+	for i := start; i < len(migrations); i++ {
+		_, err := db.Exec(migrations[i])
 		util.PanicOnErr(err)
-		_, err = db.Exec(fmt.Sprintf(`INSERT INTO migrations VALUES (%d)`, id))
+		fmt.Printf("migration %d\n", i)
+		_, err = db.Exec(`INSERT INTO migrations(ID) VALUES (?)`, i)
 		util.PanicOnErr(err)
 	}
 }
@@ -48,12 +51,29 @@ func getMigrations() []string {
 			set_number TEXT,
 			name TEXT,
 			oracle_id TEXT,
+			thumbnail_url TEXT,
 			updated_at DATETIME
 		)`,
-		`CREATE TABLE entries(
-			scryfall_id TEXT,
-			FOREIGN KEY(scryfall_id) REFERENCES cards(scryfall_id)
+		`CREATE TABLE lists(
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			name TEXT
 		)`,
-		`ALTER TABLE cards ADD thumbnail_url TEXT`,
+		`CREATE TABLE entries(
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			scryfall_id TEXT,
+			list_id INTEGER,
+			FOREIGN KEY(scryfall_id) REFERENCES cards(scryfall_id),
+			FOREIGN KEY(list_id) REFERENCES lists(id)
+		)`,
+		`CREATE TABLE tags(
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			name TEXT
+		)`,
+		`CREATE TABLE entries_tags(
+			entry_id INTEGER,
+			tag_id INTEGER,
+			FOREIGN KEY(entry_id) REFERENCES entries(id),
+			FOREIGN KEY(tag_id) REFERENCES tag(id)
+		)`,
 	}
 }

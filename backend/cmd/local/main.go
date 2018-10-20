@@ -14,7 +14,11 @@ func main() {
 	e.Use(middleware.CORS())
 
 	e.GET("/card/set-number/:set/:number", getCardBySetAndNumber)
+	e.GET("/list", getLists)
+	e.GET("/tag", getTags)
+
 	e.POST("/entry", postEntry)
+	e.POST("/list", postList)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }
