@@ -1,13 +1,33 @@
 <template>
   <div>
-    {{ this.card }}
+    <h2>Card:</h2>
+    <div>
+      {{ this.card }}
+    </div>
+    <h2>lists:</h2>
+    <div>
+      {{ this.lists }}
+    </div>
+    <h2>tags:</h2>
+    <div>
+      {{ this.tags }}
+    </div>
+    <h2>entries:</h2>
+    <div>
+      {{ this.entries }}
+    </div>
     <BigButton @click="addEntry" label="Add to list" :disabled="false" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { CardInterface, postEntry } from "@/add-to-list/api";
+import {
+  CardInterface,
+  postEntry,
+  ListInterface,
+  EntryInterface
+} from "@/add-to-list/api";
 import BigButton from "./BigButton.vue";
 
 @Component({
@@ -16,9 +36,14 @@ import BigButton from "./BigButton.vue";
 export default class EntryForm extends Vue {
   @Prop({ required: true })
   private card!: CardInterface;
+  @Prop({ required: true })
+  private entries!: EntryInterface;
+  @Prop({ required: true })
+  private lists!: ListInterface[];
+  @Prop({ required: true })
+  private tags!: string[];
 
   private async addEntry() {
-    console.log(this.card.scryfall_id);
     let success: boolean;
     try {
       await postEntry({

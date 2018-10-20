@@ -5,7 +5,7 @@
         <card-preview :url="currentCard.thumbnail_url" />
       </div>
       <div class="column">
-        <entry-form :card="currentCard" @done="closeModal" />
+        <entry-form :card="currentCard" :lists="lists" :tags="tags" :entries="entries" @done="closeModal" />
       </div>
     </div>
   </modal>
@@ -14,7 +14,14 @@
 <script lang="ts">
 import { Component, Vue, Watch, Prop } from "vue-property-decorator";
 import { CardIDs } from "../index";
-import { CardInterface, getCardBySetAndNumber } from "../api";
+import {
+  CardInterface,
+  getCardBySetAndNumber,
+  EntryInterface,
+  ListInterface,
+  getLists,
+  getTags
+} from "../api";
 import Modal from "./Modal.vue";
 import CardPreview from "./CardPreview.vue";
 import EntryForm from "./EntryForm.vue";
@@ -26,34 +33,61 @@ import { AxiosError } from "axios";
 export default class Base extends Vue {
   private visible: boolean = false;
   private currentCard: CardInterface = this.createEmptyCard();
+  private currentCardEntries: EntryInterface[] = [];
+  private lists: ListInterface[] = [];
+  private tags: string[] = [];
+  private validCache = false;
 
   @Prop({ required: true })
   private currentCardIDs!: CardIDs;
 
   @Watch("currentCardIDs")
   private async onCurrentCardIDsChange(ids: CardIDs) {
+    if (!this.validCache) {
+      this.loadListsAndTags();
+    }
+
     const success = await this.getCurrentCardData(ids);
     if (success) {
       this.visible = true;
     }
   }
 
+  private async loadListsAndTags() {
+    try {
+      const listRes = await getLists();
+      this.lists = listRes.lists;
+      const tagRes = await getTags();
+      this.tags = tagRes.tags;
+    } catch (e) {
+      this.axiosErrorToast(e);
+    }
+  }
+
+  private axiosErrorToast(e: any) {
+    const error = <AxiosError>e;
+    let msg: string;
+    if (error.code == undefined) {
+      msg = "Backend is not running!";
+    } else {
+      msg = "Could not load card info due to an unknown error. :(";
+    }
+
+    this.$toasted.error(msg);
+
+    return false;
+  }
+
   private async getCurrentCardData(ids: CardIDs) {
     this.currentCard = this.createEmptyCard();
     try {
-      this.currentCard = await getCardBySetAndNumber(ids.set!, ids.number!);
+      const res = await getCardBySetAndNumber(ids.set!, ids.number!);
+      this.currentCard = res.card;
+      this.currentCardEntries = res.entries;
+
       return true;
     } catch (e) {
-      const error = <AxiosError>e;
-      let msg: string;
-      if (error.code == undefined) {
-        msg = "Backend is not running!";
-      } else {
-        msg = "Could not load card info due to an unknown error. :(";
-      }
-
-      this.$toasted.error(msg);
-
+      this.axiosErrorToast(e);
       return false;
     }
   }
@@ -70,7 +104,8 @@ export default class Base extends Vue {
     };
   }
 
-  private closeModal() {
+  private onSubmit() {
+    this.validCache = false;
     this.visible = false;
   }
 }
