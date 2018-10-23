@@ -27,10 +27,10 @@ func AddCardEntry(payload AddEntryPayload) error {
 	return addTags(id, payload.Tags)
 }
 
-func DeleteCardEntry(payload DeleteEntryPayload) error {
+func DeleteCardEntry(scryfallID string, listID int) error {
 	entry := Entry{
-		ScryfallID: payload.ScryfallID,
-		ListID:     payload.ListID,
+		ScryfallID: scryfallID,
+		ListID:     listID,
 	}
 
 	id, ok := getEntryID(entry)

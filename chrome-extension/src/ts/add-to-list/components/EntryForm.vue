@@ -8,7 +8,8 @@
       <label>Tags:</label>
       <tagger v-model="entry.tags" :all-tags="tags" :current-list-tags="currentListTags" />
     </div>
-    <BigButton @click="addEntry" label="Save" :disabled="!valid" />
+    <BigButton @click="addEntry" label="Save" :disabled="!valid" color="green" size="md" />
+    <BigButton @click="deleteEntry" label="Delete entry" :disabled="!currentEntryExists" color="red" size="sm" />
   </div>
 </template>
 
@@ -18,7 +19,8 @@ import {
   CardInterface,
   postEntry,
   ListInterface,
-  EntryInterface
+  EntryInterface,
+  deleteEntry
 } from "@/add-to-list/api";
 import BigButton from "./BigButton.vue";
 import Tagger from "./Tagger.vue";
@@ -50,6 +52,15 @@ export default class EntryForm extends Vue {
 
   private get valid(): boolean {
     return this.entry.scryfall_id !== "" && this.entry.list_id > 0;
+  }
+
+  private get currentEntryExists(): boolean {
+    for (let i = 0; i < this.entries.length; i++) {
+      if (this.entries[i].list_id === this.entry.list_id) {
+        return true;
+      }
+    }
+    return false;
   }
 
   @Watch("card")
@@ -88,6 +99,18 @@ export default class EntryForm extends Vue {
       await postEntry(this.entry);
       chrome.storage.local.set({ last_list_id: this.entry.list_id });
       this.$toasted.success("Entry succesfully added!");
+    } catch (e) {
+      this.$toasted.error("Something went wrong :(");
+    }
+
+    this.$emit("done");
+  }
+
+  private async deleteEntry() {
+    let success: boolean;
+    try {
+      await deleteEntry(this.entry.scryfall_id, this.entry.list_id);
+      this.$toasted.success("Entry succesfully deleted!");
     } catch (e) {
       this.$toasted.error("Something went wrong :(");
     }

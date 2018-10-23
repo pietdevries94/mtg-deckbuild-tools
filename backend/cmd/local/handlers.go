@@ -1,6 +1,8 @@
 package main
 
 import (
+	"strconv"
+
 	"github.com/labstack/echo"
 	"github.com/pietdevries94/mtg-deckbuild-tools/backend/domains/card"
 	"github.com/pietdevries94/mtg-deckbuild-tools/backend/domains/entry"
@@ -73,10 +75,11 @@ func getTags(c echo.Context) error {
 }
 
 func deleteEntry(c echo.Context) error {
-	payload := entry.DeleteEntryPayload{}
-	c.Bind(&payload)
+	scryfallID, listStringID := c.Param(`scryfall_id`), c.Param(`list_id`)
 
-	err := entry.DeleteCardEntry(payload)
+	listID, err := strconv.Atoi(listStringID)
+
+	err = entry.DeleteCardEntry(scryfallID, listID)
 	if err != nil {
 		return err
 	}

@@ -88,3 +88,7 @@ export async function postList(payload: PostListPayload) {
         throw (e)
     }
 }
+
+export function deleteEntry(scryfallID: string, listID: number) {
+    return client.delete("/entry/" + scryfallID + "/" + listID)
+}

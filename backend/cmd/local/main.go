@@ -20,7 +20,7 @@ func main() {
 	e.POST("/entry", postEntry)
 	e.POST("/list", postList)
 
-	e.DELETE("/entry", deleteEntry)
+	e.DELETE("/entry/:scryfall_id/:list_id", deleteEntry)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }
