@@ -52,13 +52,11 @@ func getEntriesForCard(scryfallID string) ([]Entry, error) {
 	}
 
 	entries := []Entry{}
-	i := 0
 	for rows.Next() {
 		e := Entry{}
 		err := rows.Scan(&e.ID, &e.ListID, &e.ScryfallID)
 		util.PanicOnErr(err)
-		entries[i] = e
-		i++
+		entries = append(entries, e)
 	}
 
 	return entries, nil
@@ -72,17 +70,15 @@ func addTags(entryID int, tags []string) error {
 	util.PanicOnErr(err)
 
 	existingTagIDs := []int{}
-	i := 0
 	for currentRows.Next() {
 		id := 0
 		currentRows.Scan(&id)
-		existingTagIDs[i] = id
-		i++
+		existingTagIDs = append(existingTagIDs, id)
 	}
 
 	// Get all needed tag ids
 	tagsString := strings.Join(tags, `','`)
-	getIDsQuery := fmt.Sprintf("select id from tags where name in ('%s')", tagsString)
+	getIDsQuery := fmt.Sprintf("select id, name from tags where name in ('%s')", tagsString)
 	rows, err := db.Query(getIDsQuery)
 	util.PanicOnErr(err)
 
@@ -93,8 +89,12 @@ func addTags(entryID int, tags []string) error {
 
 	for rows.Next() {
 		id := 0
-		err := rows.Scan(&id)
+		name := ``
+		err := rows.Scan(&id, &name)
 		util.PanicOnErr(err)
+
+		// remove the name the tags list to mark it as processed
+		tags = util.DeleteFromStringSliceByValue(tags, name)
 
 		// skip if already exists and remove the tag id from the list
 		if index, ok := util.IntInSlice(id, existingTagIDs); ok {
@@ -105,6 +105,29 @@ func addTags(entryID int, tags []string) error {
 		_, err = prep.Exec(id)
 		if err != nil {
 			return err
+		}
+	}
+
+	// add the missing tags
+	if len(tags) > 0 {
+		valuesTagString := strings.Join(tags, `'),('`)
+		_, err = db.Exec(`insert into tags(name) values (?)`, valuesTagString)
+		util.PanicOnErr(err)
+
+		tagsString := strings.Join(tags, `','`)
+		getIDsQuery := fmt.Sprintf("select id from tags where name in ('%s')", tagsString)
+		rows, err := db.Query(getIDsQuery)
+		util.PanicOnErr(err)
+
+		for rows.Next() {
+			id := 0
+			err := rows.Scan(&id)
+			util.PanicOnErr(err)
+
+			_, err = prep.Exec(id)
+			if err != nil {
+				return err
+			}
 		}
 	}
 

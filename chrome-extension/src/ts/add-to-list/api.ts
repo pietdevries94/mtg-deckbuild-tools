@@ -17,10 +17,10 @@ export interface ListInterface {
 }
 
 export interface EntryInterface {
-    id: number
+    id?: number
     scryfall_id: string
     list_id: number
-    included_tags: string[]
+    tags: string[]
 }
 
 export interface GetCardResponse {
@@ -36,12 +36,12 @@ export interface GetTagsResponse {
     tags: string[]
 }
 
-export interface PostEntryPayload {
-    scryfall_id: string
-}
-
 export interface PostListPayload {
     name: string
+}
+
+export interface PostListResponse {
+    id: number
 }
 
 const client = axios.create({
@@ -58,7 +58,7 @@ export async function getCardBySetAndNumber(set: string, number: string) {
     }
 }
 
-export function postEntry(payload: PostEntryPayload) {
+export function postEntry(payload: EntryInterface) {
     return client.post<void>("/entry", payload)
 }
 
@@ -80,6 +80,11 @@ export async function getTags() {
     }
 }
 
-export function postList(payload: PostListPayload) {
-    return client.post<void>("/list", payload)
+export async function postList(payload: PostListPayload) {
+    try {
+        const response = await client.post<PostListResponse>("/list", payload)
+        return response.data
+    } catch (e) {
+        throw (e)
+    }
 }

@@ -26,6 +26,17 @@ func DeleteFromIntSlice(s []int, index int) []int {
 	return s[:len(s)-1]
 }
 
+func DeleteFromStringSliceByValue(s []string, value string) []string {
+	for index, val := range s {
+		if val != value {
+			continue
+		}
+		s[index] = s[len(s)-1]
+		return s[:len(s)-1]
+	}
+	return s
+}
+
 func IntSliceJoin(s []int, delim string) string {
 	// https://stackoverflow.com/questions/37532255/one-liner-to-transform-int-into-string/37533144
 

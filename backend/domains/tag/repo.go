@@ -10,7 +10,7 @@ import (
 func selectNames(q string, args ...interface{}) ([]string, error) {
 	db := data.GetDB()
 
-	rows, err := db.Query(`select name from tags`, args...)
+	rows, err := db.Query(q, args...)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return []string{}, nil
@@ -19,16 +19,14 @@ func selectNames(q string, args ...interface{}) ([]string, error) {
 	}
 
 	tags := []string{}
-	i := 0
 	for rows.Next() {
 		tag := ``
 		err := rows.Scan(&tag)
 		util.PanicOnErr(err)
-		tags[i] = tag
-		i++
+		tags = append(tags, tag)
 	}
 
-	return nil, nil
+	return tags, nil
 }
 
 func getTags() ([]string, error) {
@@ -40,7 +38,8 @@ func getTagsForListID(listID int) ([]string, error) {
 	from entries e 
 	INNER join entries_tags et on e.id = et.entry_id 
 	INNER join tags t on t.id = et.tag_id
-	where e.list_id = ?`, listID)
+	where e.list_id = ?
+	group by t.name`, listID)
 }
 
 func getTagsForEntryID(entryID int) ([]string, error) {

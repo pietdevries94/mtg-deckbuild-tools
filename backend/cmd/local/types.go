@@ -11,6 +11,10 @@ type getCardResponse struct {
 	Entries []entry.Entry `json:"entries"`
 }
 
+type genericInsertResponse struct {
+	ID int `json:"id"`
+}
+
 type getListsResponse struct {
 	Lists []list.List `json:"lists"`
 }

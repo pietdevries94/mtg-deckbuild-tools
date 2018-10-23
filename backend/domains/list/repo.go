@@ -20,19 +20,17 @@ func getLists() ([]List, error) {
 	}
 
 	lists := []List{}
-	i := 0
 	for rows.Next() {
 		l := List{}
 		err := rows.Scan(&l.ID, &l.Name)
 		util.PanicOnErr(err)
-		lists[i] = l
-		i++
+		lists = append(lists, l)
 	}
 
-	return nil, nil
+	return lists, nil
 }
 
-func addList(name string) error {
+func addList(name string) (int, error) {
 	db := data.GetDB()
 
 	checkQ := `select count(*) from lists where name = ?`
@@ -42,11 +40,15 @@ func addList(name string) error {
 	util.PanicOnErr(err)
 
 	if count != 0 {
-		return fmt.Errorf("list '%s' already exists", name)
+		return -1, fmt.Errorf("list '%s' already exists", name)
 	}
 
 	insertQ := `insert into lists(name) values(?)`
-	_, err = db.Exec(insertQ, name)
+	res, err := db.Exec(insertQ, name)
+	if err != nil {
+		return -1, err
+	}
 
-	return err
+	id, err := res.LastInsertId()
+	return int(id), err
 }

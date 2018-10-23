@@ -21,6 +21,6 @@ func GetLists() ([]List, error) {
 	return lists, nil
 }
 
-func AddList(payload AddListPayload) error {
+func AddList(payload AddListPayload) (int, error) {
 	return addList(payload.Name)
 }

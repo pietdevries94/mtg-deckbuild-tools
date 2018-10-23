@@ -5,7 +5,7 @@
         <card-preview :url="currentCard.thumbnail_url" />
       </div>
       <div class="column">
-        <entry-form :card="currentCard" :lists="lists" :tags="tags" :entries="entries" @done="closeModal" />
+        <entry-form :card="currentCard" :lists="lists" :tags="tags" :entries="currentCardEntries" @done="onSubmit" @reloadListsAndTags="loadListsAndTags" />
       </div>
     </div>
   </modal>

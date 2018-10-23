@@ -8,8 +8,8 @@ Vue.use(Toasted, {
 })
 
 export interface CardIDs {
-    set?: string
-    number?: string
+    set: string
+    number: string
 }
 
 const vueDiv = document.createElement('div')
@@ -19,16 +19,22 @@ document.
     appendChild(vueDiv)
 
 const vueInstance = new Vue({
-    render: (h) => h(
-        Base,
-        {
-            props: {
-                currentCardIDs: <CardIDs>{}
-            },
-        }
-    ),
+    components: { Base },
+    render(createElement) {
+        return createElement(
+            Base,
+            {
+                props: {
+                    currentCardIDs: this.currentCardIDs,
+                },
+            }
+        )
+    },
+    data: {
+        currentCardIDs: { set: '', number: 0 }
+    }
 }).$mount(vueDiv)
 
 export const addCardByCodeAndNumber = (set: string, number: string) => {
-    Vue.set(vueInstance.$children[0]!.$props, 'currentCardIDs', { set, number })
+    Vue.set(vueInstance.$data, 'currentCardIDs', { set, number })
 }

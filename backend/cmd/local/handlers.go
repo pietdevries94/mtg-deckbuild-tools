@@ -23,11 +23,13 @@ func postList(c echo.Context) error {
 	payload := list.AddListPayload{}
 	c.Bind(&payload)
 
-	err := list.AddList(payload)
+	id, err := list.AddList(payload)
 	if err != nil {
 		return err
 	}
-	return c.String(201, ``)
+	return c.JSON(200, genericInsertResponse{
+		ID: id,
+	})
 }
 
 func getCardBySetAndNumber(c echo.Context) error {
