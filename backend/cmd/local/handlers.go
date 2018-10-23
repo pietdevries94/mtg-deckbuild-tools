@@ -71,3 +71,14 @@ func getTags(c echo.Context) error {
 		Tags: tags,
 	})
 }
+
+func deleteEntry(c echo.Context) error {
+	payload := entry.DeleteEntryPayload{}
+	c.Bind(&payload)
+
+	err := entry.DeleteCardEntry(payload)
+	if err != nil {
+		return err
+	}
+	return c.String(201, ``)
+}

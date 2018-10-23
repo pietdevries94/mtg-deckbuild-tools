@@ -20,5 +20,7 @@ func main() {
 	e.POST("/entry", postEntry)
 	e.POST("/list", postList)
 
+	e.DELETE("/entry", deleteEntry)
+
 	e.Logger.Fatal(e.Start(":1323"))
 }

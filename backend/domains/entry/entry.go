@@ -27,6 +27,22 @@ func AddCardEntry(payload AddEntryPayload) error {
 	return addTags(id, payload.Tags)
 }
 
+func DeleteCardEntry(payload DeleteEntryPayload) error {
+	entry := Entry{
+		ScryfallID: payload.ScryfallID,
+		ListID:     payload.ListID,
+	}
+
+	id, ok := getEntryID(entry)
+	if !ok {
+		return nil
+	}
+
+	deleteEntry(id)
+
+	return nil
+}
+
 func GetEntriesForCard(scryfallID string) ([]Entry, error) {
 	entries, err := getEntriesForCard(scryfallID)
 	if err != nil {

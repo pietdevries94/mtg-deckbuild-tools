@@ -139,3 +139,14 @@ func addTags(entryID int, tags []string) error {
 
 	return nil
 }
+
+func deleteEntry(id int) error {
+	db := data.GetDB()
+
+	if _, err := db.Exec(`delete from entries_tags where entry_id = ?`, id); err != nil {
+		return err
+	}
+
+	_, err := db.Exec(`delete from entries where id = ?`, id)
+	return err
+}
