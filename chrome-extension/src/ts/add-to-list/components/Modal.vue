@@ -1,6 +1,6 @@
 <template>
-  <div v-show="visible" class="modal" @click="hide">
-    <div class="modal-content" @click.stop>
+  <div v-show="visible" class="mtg-deck-tools-modal" @click="hide">
+    <div class="mtg-deck-tools-modal-content" @click.stop>
       <slot />
     </div>
   </div>
@@ -27,9 +27,9 @@ export default class Modal extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.modal {
+.mtg-deck-tools-modal {
   position: fixed;
-  z-index: 1;
+  z-index: 100;
   left: 0;
   top: 0;
   width: 100%;
@@ -39,7 +39,7 @@ export default class Modal extends Vue {
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-.modal-content {
+.mtg-deck-tools-modal-content {
   background-color: #fefefe;
   margin: 15% auto;
   padding: 20px;

@@ -14,11 +14,24 @@
                 "css/scryfall.css"
             ],
             "run_at": "document_end"
+        },
+        {
+            "matches": [
+                "https://edhrec.com/*"
+            ],
+            "js": [
+                "js/edhrec-content.js"
+            ],
+            "css": [
+                "css/edhrec.css"
+            ],
+            "run_at": "document_end"
         }
     ],
     "permissions": [
         "http://localhost:1323/*",
         "https://scryfall.com/*",
+        "https://edhrec.com/*",
         "storage"
     ],
     "web_accessible_resources": [

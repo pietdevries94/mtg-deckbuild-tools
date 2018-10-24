@@ -1,0 +1,12 @@
+.mtg-deck-tools.button-wrapper {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    padding: 2px;
+}
+
+.nw.nwpanel {
+    height: initial !important;
+}

@@ -9,7 +9,8 @@ var env = {
 var options = {
     context: __dirname,
     entry: {
-        "scryfall-content": path.join(__dirname, "src", "entry", "scryfall-content.ts")
+        "scryfall-content": path.join(__dirname, "src", "entry", "scryfall-content.ts"),
+        "edhrec-content": path.join(__dirname, "src", "entry", "edhrec-content.ts")
     },
     output: {
         path: path.join(__dirname, "dist", "js"),
