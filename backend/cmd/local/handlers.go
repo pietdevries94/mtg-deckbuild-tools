@@ -52,6 +52,24 @@ func getCardBySetAndNumber(c echo.Context) error {
 	})
 }
 
+func getCardByName(c echo.Context) error {
+	name := c.Param(`name`)
+
+	card, err := card.GetCardByName(name)
+	if err != nil {
+		return err
+	}
+	entries, err := entry.GetEntriesForCard(card.ScryfallID)
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(200, getCardResponse{
+		Card:    card,
+		Entries: entries,
+	})
+}
+
 func getLists(c echo.Context) error {
 	lists, err := list.GetLists()
 	if err != nil {

@@ -26,15 +26,21 @@ const vueInstance = new Vue({
             {
                 props: {
                     currentCardIDs: this.currentCardIDs,
+                    currentCardName: this.currentCardName
                 },
             }
         )
     },
     data: {
-        currentCardIDs: { set: '', number: 0 }
+        currentCardIDs: { set: '', number: 0 },
+        currentCardName: ''
     }
 }).$mount(vueDiv)
 
 export const addCardByCodeAndNumber = (set: string, number: string) => {
     Vue.set(vueInstance.$data, 'currentCardIDs', { set, number })
+}
+
+export const addCardByName = (name: string) => {
+    Vue.set(vueInstance.$data, 'currentCardName', name)
 }

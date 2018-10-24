@@ -58,6 +58,15 @@ export async function getCardBySetAndNumber(set: string, number: string) {
     }
 }
 
+export async function getCardByName(name: string) {
+    try {
+        const response = await client.get<GetCardResponse>("/card/name/" + name)
+        return response.data
+    } catch (e) {
+        throw (e)
+    }
+}
+
 export function postEntry(payload: EntryInterface) {
     return client.post<void>("/entry", payload)
 }

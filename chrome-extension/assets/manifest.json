@@ -26,12 +26,27 @@
                 "css/edhrec.css"
             ],
             "run_at": "document_end"
+        },
+        {
+            "matches": [
+                "https://tappedout.net/*",
+                "http://tappedout.net/*"
+            ],
+            "js": [
+                "js/tappedout-content.js"
+            ],
+            "css": [
+                "css/tappedout.css"
+            ],
+            "run_at": "document_end"
         }
     ],
     "permissions": [
         "http://localhost:1323/*",
         "https://scryfall.com/*",
         "https://edhrec.com/*",
+        "https://tappedout.net/*",
+        "http://tappedout.net/*",
         "storage"
     ],
     "web_accessible_resources": [

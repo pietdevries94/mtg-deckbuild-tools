@@ -14,6 +14,7 @@ func main() {
 	e.Use(middleware.CORS())
 
 	e.GET("/card/set-number/:set/:number", getCardBySetAndNumber)
+	e.GET("/card/name/:name", getCardByName)
 	e.GET("/list", getLists)
 	e.GET("/tag", getTags)
 

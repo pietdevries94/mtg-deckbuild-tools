@@ -20,7 +20,8 @@ import {
   EntryInterface,
   ListInterface,
   getLists,
-  getTags
+  getTags,
+  getCardByName
 } from "../api";
 import Modal from "./Modal.vue";
 import CardPreview from "./CardPreview.vue";
@@ -41,13 +42,28 @@ export default class Base extends Vue {
   @Prop({ required: true })
   private currentCardIDs!: CardIDs;
 
+  @Prop({ required: true })
+  private currentCardName!: string;
+
   @Watch("currentCardIDs")
   private async onCurrentCardIDsChange(ids: CardIDs) {
     if (!this.validCache) {
       this.loadListsAndTags();
     }
 
-    const success = await this.getCurrentCardData(ids);
+    const success = await this.getCurrentCardDataByIDs(ids);
+    if (success) {
+      this.visible = true;
+    }
+  }
+
+  @Watch("currentCardName")
+  private async onCurrentCardNameChange(name: string) {
+    if (!this.validCache) {
+      this.loadListsAndTags();
+    }
+
+    const success = await this.getCurrentCardDataByName(name);
     if (success) {
       this.visible = true;
     }
@@ -78,10 +94,24 @@ export default class Base extends Vue {
     return false;
   }
 
-  private async getCurrentCardData(ids: CardIDs) {
+  private async getCurrentCardDataByIDs(ids: CardIDs) {
     this.currentCard = this.createEmptyCard();
     try {
-      const res = await getCardBySetAndNumber(ids.set!, ids.number!);
+      const res = await getCardBySetAndNumber(ids.set, ids.number);
+      this.currentCard = res.card;
+      this.currentCardEntries = res.entries;
+
+      return true;
+    } catch (e) {
+      this.axiosErrorToast(e);
+      return false;
+    }
+  }
+
+  private async getCurrentCardDataByName(name: string) {
+    this.currentCard = this.createEmptyCard();
+    try {
+      const res = await getCardByName(name);
       this.currentCard = res.card;
       this.currentCardEntries = res.entries;
 

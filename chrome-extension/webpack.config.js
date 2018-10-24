@@ -10,7 +10,8 @@ var options = {
     context: __dirname,
     entry: {
         "scryfall-content": path.join(__dirname, "src", "entry", "scryfall-content.ts"),
-        "edhrec-content": path.join(__dirname, "src", "entry", "edhrec-content.ts")
+        "edhrec-content": path.join(__dirname, "src", "entry", "edhrec-content.ts"),
+        "tappedout-content": path.join(__dirname, "src", "entry", "tappedout-content.ts")
     },
     output: {
         path: path.join(__dirname, "dist", "js"),
