@@ -52,3 +52,17 @@ func addList(name string) (int, error) {
 	id, err := res.LastInsertId()
 	return int(id), err
 }
+
+func deleteListEntries(id int) error {
+	db := data.GetDB()
+
+	_, err := db.Exec(`delete from entries where list_id = ?`, id)
+	return err
+}
+
+func deleteList(id int) error {
+	db := data.GetDB()
+
+	_, err := db.Exec(`delete from lists where id = ?`, id)
+	return err
+}

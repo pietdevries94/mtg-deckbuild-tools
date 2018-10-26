@@ -26,6 +26,7 @@ func main() {
 	api.POST("/list", postList)
 
 	api.DELETE("/entry/:scryfall_id/:list_id", deleteEntry)
+	api.DELETE("/list/:list_id", deleteList)
 
 	fs := http.FileServer(data.GetFrontendFS())
 	e.GET("*", echo.WrapHandler(fs))

@@ -24,3 +24,11 @@ func GetLists() ([]List, error) {
 func AddList(payload AddListPayload) (int, error) {
 	return addList(payload.Name)
 }
+
+func DeleteList(id int) error {
+	if err := deleteListEntries(id); err != nil {
+		return err
+	}
+
+	return deleteList(id)
+}

@@ -1,18 +1,22 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <div>
+    <list-picker v-model="currentList" />
+    <div v-show="currentList != null">
+      <entries-table />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
+import EntriesTable from "@/components/EntriesTable.vue";
+import { getLists, ListInterface } from "@/api.ts";
+import ListPicker from "@/components/ListPicker.vue";
 
 @Component({
-  components: {
-    HelloWorld
-  }
+  components: { EntriesTable, ListPicker }
 })
-export default class Home extends Vue {}
+export default class Home extends Vue {
+  private currentList: ListInterface | null = null;
+}
 </script>

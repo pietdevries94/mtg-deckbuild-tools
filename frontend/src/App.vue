@@ -1,11 +1,14 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app id="app">
+    <v-toolbar color="indigo" dark fixed app>
+      <v-toolbar-title>MtG deck tools</v-toolbar-title>
+    </v-toolbar>
+    <v-content>
+      <v-container fluid grid-list-md>
+        <router-view/>
+      </v-container>
+    </v-content>
+  </v-app>
 </template>
 
 <style>

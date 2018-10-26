@@ -103,3 +103,15 @@ func deleteEntry(c echo.Context) error {
 	}
 	return c.String(201, ``)
 }
+
+func deleteList(c echo.Context) error {
+	listStringID := c.Param(`list_id`)
+
+	listID, err := strconv.Atoi(listStringID)
+
+	err = list.DeleteList(listID)
+	if err != nil {
+		return err
+	}
+	return c.String(201, ``)
+}
