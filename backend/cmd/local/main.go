@@ -20,13 +20,14 @@ func main() {
 	api.GET("/card/set-number/:set/:number", getCardBySetAndNumber)
 	api.GET("/card/name/:name", getCardByName)
 	api.GET("/list", getLists)
+	api.GET("/list/:id/entries", getListEntries)
 	api.GET("/tag", getTags)
 
 	api.POST("/entry", postEntry)
 	api.POST("/list", postList)
 
 	api.DELETE("/entry/:scryfall_id/:list_id", deleteEntry)
-	api.DELETE("/list/:list_id", deleteList)
+	api.DELETE("/list/:id", deleteList)
 
 	fs := http.FileServer(data.GetFrontendFS())
 	e.GET("*", echo.WrapHandler(fs))

@@ -22,3 +22,7 @@ type getListsResponse struct {
 type getTagsResponse struct {
 	Tags []string `json:"tags"`
 }
+
+type getListEntriesResponse struct {
+	Entries []entry.Entry `json:"entries"`
+}

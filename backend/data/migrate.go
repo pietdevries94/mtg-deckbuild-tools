@@ -75,5 +75,8 @@ func getMigrations() []string {
 			FOREIGN KEY(entry_id) REFERENCES entries(id),
 			FOREIGN KEY(tag_id) REFERENCES tag(id)
 		)`,
+		`ALTER TABLE cards ADD COLUMN casting_cost TEXT`,
+		`ALTER TABLE cards ADD COLUMN online_price TEXT`,
+		`ALTER TABLE cards ADD COLUMN copies_owned INTEGER DEFAULT 0`,
 	}
 }

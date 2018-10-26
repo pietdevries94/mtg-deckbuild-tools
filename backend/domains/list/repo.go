@@ -66,3 +66,7 @@ func deleteList(id int) error {
 	_, err := db.Exec(`delete from lists where id = ?`, id)
 	return err
 }
+
+func getList(id int) (List, error) {
+	return List{}, nil
+}

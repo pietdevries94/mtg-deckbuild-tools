@@ -1,130 +1,97 @@
 <template>
-  <v-data-table
+  <div>
+    <v-data-table
       :headers="headers"
-      :items="desserts"
+      :items="entries"
       hide-actions
-      class="elevation-1"
     >
       <template slot="items" slot-scope="props">
-        <td>{{ props.item.name }}</td>
-        <td class="text-xs-right">{{ props.item.calories }}</td>
-        <td class="text-xs-right">{{ props.item.fat }}</td>
-        <td class="text-xs-right">{{ props.item.carbs }}</td>
-        <td class="text-xs-right">{{ props.item.protein }}</td>
-        <td class="text-xs-right">{{ props.item.iron }}</td>
+          <td class="text-xs-left">
+            <v-tooltip bottom>
+              <span slot="activator">{{ props.item.card.name }}</span>
+              <img :src="props.item.card.thumbnail_url" class="preview">
+            </v-tooltip>
+          </td>
+
+          <td class="text-xs-left" v-for="(tag, index) in list.included_tags" :key="index">
+            <v-checkbox :inputValue="props.item.tags.includes(tag)" @change="(state) => {updateTags(props.item, tag, state)}" />
+          </td>
+          
+          <td>
+            <v-btn color="primary" @click="openCardScryfall(props.item.card)">Open on Scryfall</v-btn>
+            <v-btn color="error" @click="deleteEntry(props.item.scryfall_id, props.item.list_id)">Delete entry</v-btn>
+          </td>
       </template>
-  </v-data-table>
+    </v-data-table>
+  </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import {
+  EntryInterface,
+  CardInterface,
+  ListInterface,
+  deleteEntry,
+  postEntry
+} from "@/api";
 
 @Component
 export default class EntriesTable extends Vue {
-  private headers = [
-    {
-      text: "Dessert (100g serving)",
-      align: "left",
-      sortable: false,
-      value: "name"
-    },
-    { text: "Calories", value: "calories" },
-    { text: "Fat (g)", value: "fat" },
-    { text: "Carbs (g)", value: "carbs" },
-    { text: "Protein (g)", value: "protein" },
-    { text: "Iron (%)", value: "iron" }
-  ];
-  private desserts = [
-    {
-      value: false,
-      name: "Frozen Yogurt",
-      calories: 159,
-      fat: 6.0,
-      carbs: 24,
-      protein: 4.0,
-      iron: "1%"
-    },
-    {
-      value: false,
-      name: "Ice cream sandwich",
-      calories: 237,
-      fat: 9.0,
-      carbs: 37,
-      protein: 4.3,
-      iron: "1%"
-    },
-    {
-      value: false,
-      name: "Eclair",
-      calories: 262,
-      fat: 16.0,
-      carbs: 23,
-      protein: 6.0,
-      iron: "7%"
-    },
-    {
-      value: false,
-      name: "Cupcake",
-      calories: 305,
-      fat: 3.7,
-      carbs: 67,
-      protein: 4.3,
-      iron: "8%"
-    },
-    {
-      value: false,
-      name: "Gingerbread",
-      calories: 356,
-      fat: 16.0,
-      carbs: 49,
-      protein: 3.9,
-      iron: "16%"
-    },
-    {
-      value: false,
-      name: "Jelly bean",
-      calories: 375,
-      fat: 0.0,
-      carbs: 94,
-      protein: 0.0,
-      iron: "0%"
-    },
-    {
-      value: false,
-      name: "Lollipop",
-      calories: 392,
-      fat: 0.2,
-      carbs: 98,
-      protein: 0,
-      iron: "2%"
-    },
-    {
-      value: false,
-      name: "Honeycomb",
-      calories: 408,
-      fat: 3.2,
-      carbs: 87,
-      protein: 6.5,
-      iron: "45%"
-    },
-    {
-      value: false,
-      name: "Donut",
-      calories: 452,
-      fat: 25.0,
-      carbs: 51,
-      protein: 4.9,
-      iron: "22%"
-    },
-    {
-      value: false,
-      name: "KitKat",
-      calories: 518,
-      fat: 26.0,
-      carbs: 65,
-      protein: 7,
-      iron: "6%"
+  @Prop({ required: true })
+  private list!: ListInterface | null;
+  @Prop({ required: true })
+  private entries!: EntryInterface[];
+
+  private headers: { text: string; value: string; align?: string }[] = [];
+
+  @Watch("entries")
+  private setHeaders() {
+    if (!this.list) return;
+
+    this.headers = [{ text: "Name", value: "card.name" }];
+
+    this.list.included_tags.forEach((tag, index) => {
+      this.headers.push({
+        text: tag,
+        value: "card.tags." + index
+      });
+    });
+
+    this.headers.push({ text: "Actions", value: "id", align: "center" });
+  }
+
+  private updateTags(entry: EntryInterface, tag: string, state: boolean) {
+    if (state) {
+      entry.tags.push(tag);
+    } else {
+      const index = entry.tags.indexOf(tag);
+      entry.tags.splice(index, 1);
     }
-  ];
+
+    postEntry(entry);
+  }
+
+  private openCardScryfall(card: CardInterface) {
+    window.open(
+      "https://scryfall.com/card/" + card.set_code + "/" + card.set_number,
+      "_blank"
+    );
+  }
+
+  private async deleteEntry(scryfallID: string, listID: number) {
+    await deleteEntry(scryfallID, listID);
+    this.$emit("reload:entries");
+  }
+
+  private created() {
+    this.setHeaders();
+  }
 }
 </script>
+
+<style scoped>
+.preview {
+  width: 400px;
+}
+</style>

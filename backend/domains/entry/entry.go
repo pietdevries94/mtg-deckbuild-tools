@@ -49,12 +49,31 @@ func GetEntriesForCard(scryfallID string) ([]Entry, error) {
 		return nil, err
 	}
 
+	return getTagsAndCardForEntries(entries)
+}
+
+func GetEntriesForList(listID int) ([]Entry, error) {
+	entries, err := getEntriesForList(listID)
+	if err != nil {
+		return nil, err
+	}
+
+	return getTagsAndCardForEntries(entries)
+}
+
+func getTagsAndCardForEntries(entries []Entry) ([]Entry, error) {
 	for i, entry := range entries {
-		tags, err := tag.GetTagsForEntryID(entry.ID)
+		t, err := tag.GetTagsForEntryID(entry.ID)
 		if err != nil {
 			return nil, err
 		}
-		entries[i].Tags = tags
+		c, err := card.GetCardByScryfallID(entry.ScryfallID)
+		if err != nil {
+			return nil, err
+		}
+
+		entries[i].Tags = t
+		entries[i].Card = c
 	}
 
 	return entries, nil

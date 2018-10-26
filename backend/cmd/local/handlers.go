@@ -105,7 +105,7 @@ func deleteEntry(c echo.Context) error {
 }
 
 func deleteList(c echo.Context) error {
-	listStringID := c.Param(`list_id`)
+	listStringID := c.Param(`id`)
 
 	listID, err := strconv.Atoi(listStringID)
 
@@ -114,4 +114,19 @@ func deleteList(c echo.Context) error {
 		return err
 	}
 	return c.String(201, ``)
+}
+
+func getListEntries(c echo.Context) error {
+	listStringID := c.Param(`id`)
+
+	listID, err := strconv.Atoi(listStringID)
+
+	entries, err := entry.GetEntriesForList(listID)
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(200, getListEntriesResponse{
+		Entries: entries,
+	})
 }

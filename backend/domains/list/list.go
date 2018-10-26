@@ -21,6 +21,22 @@ func GetLists() ([]List, error) {
 	return lists, nil
 }
 
+func GetList(id int) (List, error) {
+	list, err := getList(id)
+	if err != nil {
+		return list, err
+	}
+
+	tags, err := tag.GetTagsForListID(list.ID)
+	if err != nil {
+		return list, err
+	}
+
+	list.IncludedTags = tags
+
+	return list, nil
+}
+
 func AddList(payload AddListPayload) (int, error) {
 	return addList(payload.Name)
 }

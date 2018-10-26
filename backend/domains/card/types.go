@@ -12,4 +12,7 @@ type Card struct {
 	OracleID     string    `json:"oracle_id"`
 	ThumbnailURL string    `json:"thumbnail_url"`
 	UpdatedAt    time.Time `json:"updated_at"`
+	CastingCost  string    `json:"casting_cost"`
+	OnlinePrice  string    `json:"online_price"`
+	CopiesOwned  int       `json:"copies_owned"`
 }

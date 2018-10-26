@@ -9,6 +9,38 @@ import (
 	"github.com/pietdevries94/mtg-deckbuild-tools/backend/util"
 )
 
+func selectQuery(q string) ([]Entry, error) {
+	db := data.GetDB()
+
+	rows, err := db.Query(q)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return []Entry{}, nil
+		}
+		return nil, err
+	}
+
+	entries := []Entry{}
+	for rows.Next() {
+		e := Entry{}
+		err := rows.Scan(&e.ID, &e.ListID, &e.ScryfallID)
+		util.PanicOnErr(err)
+		entries = append(entries, e)
+	}
+
+	return entries, nil
+}
+
+func getEntriesForCard(scryfallID string) ([]Entry, error) {
+	q := fmt.Sprintf(`select id, list_id, scryfall_id from entries where scryfall_id = '%s'`, scryfallID)
+	return selectQuery(q)
+}
+
+func getEntriesForList(listID int) ([]Entry, error) {
+	q := fmt.Sprintf(`select id, list_id, scryfall_id from entries where list_id = %d`, listID)
+	return selectQuery(q)
+}
+
 func insertEntry(entry Entry) (int, error) {
 	db := data.GetDB()
 
@@ -37,29 +69,6 @@ func getEntryID(entry Entry) (int, bool) {
 	}
 
 	return id, true
-}
-
-func getEntriesForCard(scryfallID string) ([]Entry, error) {
-	db := data.GetDB()
-
-	q := `select id, list_id, scryfall_id from entries where scryfall_id = ?`
-	rows, err := db.Query(q, scryfallID)
-	if err != nil {
-		if err == sql.ErrNoRows {
-			return []Entry{}, nil
-		}
-		return nil, err
-	}
-
-	entries := []Entry{}
-	for rows.Next() {
-		e := Entry{}
-		err := rows.Scan(&e.ID, &e.ListID, &e.ScryfallID)
-		util.PanicOnErr(err)
-		entries = append(entries, e)
-	}
-
-	return entries, nil
 }
 
 func addTags(entryID int, tags []string) error {
