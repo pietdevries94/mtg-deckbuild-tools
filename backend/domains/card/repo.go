@@ -10,7 +10,8 @@ import (
 	"github.com/pietdevries94/mtg-deckbuild-tools/backend/data"
 )
 
-const columns = `scryfall_id, set_code, set_number, name, oracle_id, updated_at, thumbnail_url, casting_cost, online_price, copies_owned`
+const columns = `scryfall_id, set_code, set_number, name, oracle_id, updated_at,
+	thumbnail_url, casting_cost, online_price, copies_owned, buy_link`
 
 func getCardFromDB(q string) (Card, bool, error) {
 	var db = data.GetDB()
@@ -20,7 +21,7 @@ func getCardFromDB(q string) (Card, bool, error) {
 	ok := true
 	card := Card{}
 	err := row.Scan(&card.ScryfallID, &card.SetCode, &card.SetNumber, &card.Name, &card.OracleID,
-		&card.UpdatedAt, &card.ThumbnailURL, &card.CastingCost, &card.OnlinePrice, &card.CopiesOwned)
+		&card.UpdatedAt, &card.ThumbnailURL, &card.CastingCost, &card.OnlinePrice, &card.CopiesOwned, &card.BuyLink)
 	if err != nil {
 		if err != sql.ErrNoRows {
 			return card, false, err
@@ -150,10 +151,10 @@ func insertSfCard(sfCard scryfall.Card) (Card, error) {
 	card := sfCardToCard(sfCard)
 
 	q := `insert into cards (scryfall_id, set_code, set_number, name, oracle_id,
-		updated_at, thumbnail_url, casting_cost, online_price) 
-		values (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+		updated_at, thumbnail_url, casting_cost, online_price, buy_link) 
+		values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 	_, err := db.Exec(q, card.ScryfallID, card.SetCode, card.SetNumber, card.Name, card.OracleID,
-		card.UpdatedAt, card.ThumbnailURL, card.CastingCost, card.OnlinePrice, card.CopiesOwned)
+		card.UpdatedAt, card.ThumbnailURL, card.CastingCost, card.OnlinePrice, card.CopiesOwned, card.BuyLink)
 
 	return card, err
 }
@@ -171,10 +172,11 @@ func updateSfCard(sfCard scryfall.Card) (Card, error) {
 			updated_at = ?,
 			thumbnail_url = ?,
 			casting_cost = ?,
-			online_price = ?
+			online_price = ?,
+			buy_link = ?
 		  where scryfall_id = ?`
 	_, err := db.Exec(q, card.SetCode, card.SetNumber, card.Name, card.OracleID, card.UpdatedAt,
-		card.ThumbnailURL, card.CastingCost, card.OnlinePrice, card.ScryfallID)
+		card.ThumbnailURL, card.CastingCost, card.OnlinePrice, card.BuyLink, card.ScryfallID)
 
 	return card, err
 }
@@ -189,6 +191,7 @@ func sfCardToCard(sfCard scryfall.Card) Card {
 		ThumbnailURL: sfCard.ImageURIs.Normal,
 		CastingCost:  sfCard.ManaCost,
 		OnlinePrice:  sfCard.EUR,
+		BuyLink:      sfCard.PurchaseURIs.MagicCardMarket,
 		UpdatedAt:    time.Now(),
 	}
 }

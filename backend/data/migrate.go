@@ -78,5 +78,6 @@ func getMigrations() []string {
 		`ALTER TABLE cards ADD COLUMN casting_cost TEXT`,
 		`ALTER TABLE cards ADD COLUMN online_price TEXT`,
 		`ALTER TABLE cards ADD COLUMN copies_owned INTEGER DEFAULT 0`,
+		`ALTER TABLE cards ADD COLUMN buy_link TEXT`,
 	}
 }

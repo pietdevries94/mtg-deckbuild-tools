@@ -11,6 +11,7 @@ export interface CardInterface {
   casting_cost: string;
   online_price: string;
   copies_owned: number;
+  buy_link: string;
 }
 
 export interface ListInterface {

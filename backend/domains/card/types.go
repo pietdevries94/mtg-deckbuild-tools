@@ -15,4 +15,5 @@ type Card struct {
 	CastingCost  string    `json:"casting_cost"`
 	OnlinePrice  string    `json:"online_price"`
 	CopiesOwned  int       `json:"copies_owned"`
+	BuyLink      string    `json:"buy_link"`
 }

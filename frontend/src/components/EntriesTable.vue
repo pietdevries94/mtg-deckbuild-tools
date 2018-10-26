@@ -13,13 +13,42 @@
             </v-tooltip>
           </td>
 
-          <td class="text-xs-left" v-for="(tag, index) in list.included_tags" :key="index">
-            <v-checkbox :inputValue="props.item.tags.includes(tag)" @change="(state) => {updateTags(props.item, tag, state)}" />
+          <td class="text-xs-left">{{ props.item.card.casting_cost }}</td>
+          <td class="text-xs-left">€ {{ props.item.card.online_price }}</td>
+
+          <td class="text-xs-left" v-for="(tag, index) in list.included_tags ? list.included_tags : []" :key="index">
+            <v-checkbox
+              class="checkbox"
+              :inputValue="props.item.tags.includes(tag)"
+              @change="(state) => {updateTags(props.item, tag, state)}"
+            />
           </td>
           
           <td>
-            <v-btn color="primary" @click="openCardScryfall(props.item.card)">Open on Scryfall</v-btn>
-            <v-btn color="error" @click="deleteEntry(props.item.scryfall_id, props.item.list_id)">Delete entry</v-btn>
+            <v-btn
+              color="purple"
+              small
+              dark
+              @click="openCardScryfall(props.item.card)"
+            >
+              Scryfall
+            </v-btn>
+            <v-btn
+              color="blue"
+              small
+              dark
+              @click="openLink(props.item.card.buy_link)"
+            >
+              CardMarket
+            </v-btn>
+            <v-btn
+              class="deletebtn"
+              color="error"
+              small
+              @click="deleteEntry(props.item.scryfall_id, props.item.list_id)"
+            >
+              Delete
+            </v-btn>
           </td>
       </template>
     </v-data-table>
@@ -43,18 +72,28 @@ export default class EntriesTable extends Vue {
   @Prop({ required: true })
   private entries!: EntryInterface[];
 
-  private headers: { text: string; value: string; align?: string }[] = [];
+  private headers: {
+    text: string;
+    value: string;
+    align?: string;
+    sortable?: boolean;
+  }[] = [];
 
   @Watch("entries")
   private setHeaders() {
     if (!this.list) return;
 
-    this.headers = [{ text: "Name", value: "card.name" }];
+    this.headers = [
+      { text: "Name", value: "card.name" },
+      { text: "Cost", value: "card.casting_cost" },
+      { text: "Price", value: "card.online_price" }
+    ];
 
     this.list.included_tags.forEach((tag, index) => {
       this.headers.push({
         text: tag,
-        value: "card.tags." + index
+        value: "card.tags." + index,
+        sortable: false
       });
     });
 
@@ -72,10 +111,14 @@ export default class EntriesTable extends Vue {
     postEntry(entry);
   }
 
+  private openLink(url: string) {
+    console.log(url);
+    window.open(url, "_blank");
+  }
+
   private openCardScryfall(card: CardInterface) {
-    window.open(
-      "https://scryfall.com/card/" + card.set_code + "/" + card.set_number,
-      "_blank"
+    this.openLink(
+      "https://scryfall.com/card/" + card.set_code + "/" + card.set_number
     );
   }
 
@@ -92,6 +135,15 @@ export default class EntriesTable extends Vue {
 
 <style scoped>
 .preview {
-  width: 400px;
+  width: 350px;
+}
+
+.checkbox {
+  padding-top: 10px;
+  margin-bottom: -10px;
+}
+
+.deletebtn {
+  margin-left: 20px;
 }
 </style>
