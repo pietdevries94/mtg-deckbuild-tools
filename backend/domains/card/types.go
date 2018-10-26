@@ -16,4 +16,5 @@ type Card struct {
 	OnlinePrice  string    `json:"online_price"`
 	CopiesOwned  int       `json:"copies_owned"`
 	BuyLink      string    `json:"buy_link"`
+	TypeLine     string    `json:"type_line"`
 }

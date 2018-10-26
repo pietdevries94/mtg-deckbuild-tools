@@ -11,7 +11,7 @@ import (
 )
 
 const columns = `scryfall_id, set_code, set_number, name, oracle_id, updated_at,
-	thumbnail_url, casting_cost, online_price, copies_owned, buy_link`
+	thumbnail_url, casting_cost, online_price, copies_owned, buy_link, type_line`
 
 func getCardFromDB(q string) (Card, bool, error) {
 	var db = data.GetDB()
@@ -20,8 +20,8 @@ func getCardFromDB(q string) (Card, bool, error) {
 
 	ok := true
 	card := Card{}
-	err := row.Scan(&card.ScryfallID, &card.SetCode, &card.SetNumber, &card.Name, &card.OracleID,
-		&card.UpdatedAt, &card.ThumbnailURL, &card.CastingCost, &card.OnlinePrice, &card.CopiesOwned, &card.BuyLink)
+	err := row.Scan(&card.ScryfallID, &card.SetCode, &card.SetNumber, &card.Name, &card.OracleID, &card.UpdatedAt,
+		&card.ThumbnailURL, &card.CastingCost, &card.OnlinePrice, &card.CopiesOwned, &card.BuyLink, &card.TypeLine)
 	if err != nil {
 		if err != sql.ErrNoRows {
 			return card, false, err
@@ -151,10 +151,10 @@ func insertSfCard(sfCard scryfall.Card) (Card, error) {
 	card := sfCardToCard(sfCard)
 
 	q := `insert into cards (scryfall_id, set_code, set_number, name, oracle_id,
-		updated_at, thumbnail_url, casting_cost, online_price, buy_link) 
-		values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-	_, err := db.Exec(q, card.ScryfallID, card.SetCode, card.SetNumber, card.Name, card.OracleID,
-		card.UpdatedAt, card.ThumbnailURL, card.CastingCost, card.OnlinePrice, card.CopiesOwned, card.BuyLink)
+		updated_at, thumbnail_url, casting_cost, online_price, buy_link, type_line) 
+		values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+	_, err := db.Exec(q, card.ScryfallID, card.SetCode, card.SetNumber, card.Name, card.OracleID, card.UpdatedAt,
+		card.ThumbnailURL, card.CastingCost, card.OnlinePrice, card.CopiesOwned, card.BuyLink, card.TypeLine)
 
 	return card, err
 }
@@ -173,10 +173,11 @@ func updateSfCard(sfCard scryfall.Card) (Card, error) {
 			thumbnail_url = ?,
 			casting_cost = ?,
 			online_price = ?,
-			buy_link = ?
+			buy_link = ?,
+			type_line = ?
 		  where scryfall_id = ?`
 	_, err := db.Exec(q, card.SetCode, card.SetNumber, card.Name, card.OracleID, card.UpdatedAt,
-		card.ThumbnailURL, card.CastingCost, card.OnlinePrice, card.BuyLink, card.ScryfallID)
+		card.ThumbnailURL, card.CastingCost, card.OnlinePrice, card.BuyLink, card.TypeLine, card.ScryfallID)
 
 	return card, err
 }
@@ -192,6 +193,7 @@ func sfCardToCard(sfCard scryfall.Card) Card {
 		CastingCost:  sfCard.ManaCost,
 		OnlinePrice:  sfCard.EUR,
 		BuyLink:      sfCard.PurchaseURIs.MagicCardMarket,
+		TypeLine:     sfCard.TypeLine,
 		UpdatedAt:    time.Now(),
 	}
 }

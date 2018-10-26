@@ -13,8 +13,8 @@
             </v-tooltip>
           </td>
 
-          <td class="text-xs-left">{{ props.item.card.casting_cost }}</td>
-          <td class="text-xs-left">€ {{ props.item.card.online_price }}</td>
+          <td class="text-xs-left"><mana-cost :value="props.item.card.casting_cost" /></td>
+          <td class="text-xs-left">{{ props.item.card.type_line }}</td>
 
           <td class="text-xs-left" v-for="(tag, index) in list.included_tags ? list.included_tags : []" :key="index">
             <v-checkbox
@@ -23,6 +23,8 @@
               @change="(state) => {updateTags(props.item, tag, state)}"
             />
           </td>
+
+          <td class="text-xs-left">€ {{ props.item.card.online_price }}</td>
           
           <td>
             <v-btn
@@ -64,8 +66,11 @@ import {
   deleteEntry,
   postEntry
 } from "@/api";
+import ManaCost from "@/components/ManaCost.vue";
 
-@Component
+@Component({
+  components: { ManaCost }
+})
 export default class EntriesTable extends Vue {
   @Prop({ required: true })
   private list!: ListInterface | null;
@@ -86,7 +91,7 @@ export default class EntriesTable extends Vue {
     this.headers = [
       { text: "Name", value: "card.name" },
       { text: "Cost", value: "card.casting_cost" },
-      { text: "Price", value: "card.online_price" }
+      { text: "Type", value: "card.type_line" }
     ];
 
     this.list.included_tags.forEach((tag, index) => {
@@ -97,7 +102,10 @@ export default class EntriesTable extends Vue {
       });
     });
 
-    this.headers.push({ text: "Actions", value: "id", align: "center" });
+    this.headers.push(
+      { text: "Price", value: "card.online_price" },
+      { text: "Actions", value: "id", align: "center" }
+    );
   }
 
   private updateTags(entry: EntryInterface, tag: string, state: boolean) {
@@ -136,6 +144,7 @@ export default class EntriesTable extends Vue {
 <style scoped>
 .preview {
   width: 350px;
+  border-radius: 4.75% / 3.5%;
 }
 
 .checkbox {

@@ -12,6 +12,7 @@ export interface CardInterface {
   online_price: string;
   copies_owned: number;
   buy_link: string;
+  type_line: string;
 }
 
 export interface ListInterface {
