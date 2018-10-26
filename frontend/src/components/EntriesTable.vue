@@ -120,7 +120,6 @@ export default class EntriesTable extends Vue {
   }
 
   private openLink(url: string) {
-    console.log(url);
     window.open(url, "_blank");
   }
 
