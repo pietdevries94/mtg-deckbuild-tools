@@ -18,6 +18,10 @@ github.com/pietdevries94/mtg-deckbuild-tools v0.0.0-20181010090424-e7526ad85a03 
 github.com/pietdevries94/mtg-deckbuild-tools v0.0.0-20181010091837-dbf1dbf7080b h1:MbVuatX/MU3Afkthgy0L+QUKzb0y4iR/1sh1/0Twtl4=
 github.com/pietdevries94/mtg-deckbuild-tools v0.0.0-20181010103247-7b211d990085 h1:W19XvimrrGIrBiPXdWDiB4zOq07zcXj5g6Bl7tc2yvU=
 github.com/pietdevries94/mtg-deckbuild-tools v0.0.0-20181010165421-90f42ed4d8b4 h1:D2JxY9KuN0b8FLrQKBRyxsyiJMLNZFYQQHr0qlHsS94=
+github.com/shurcooL/httpfs v0.0.0-20171119174359-809beceb2371 h1:SWV2fHctRpRrp49VXJ6UZja7gU9QLHwRpIPBN89SKEo=
+github.com/shurcooL/httpfs v0.0.0-20171119174359-809beceb2371/go.mod h1:ZY1cvUeJuFPAdZ/B6v7RHavJWZn2YPVFQ1OSXhCGOkg=
+github.com/shurcooL/vfsgen v0.0.0-20181020040650-a97a25d856ca h1:3fECS8atRjByijiI8yYiuwLwQ2ZxXobW7ua/8GRB3pI=
+github.com/shurcooL/vfsgen v0.0.0-20181020040650-a97a25d856ca/go.mod h1:TrYk7fJVaAttu97ZZKrO9UbRa8izdowaMIZcxYMbVaw=
 github.com/valyala/bytebufferpool v1.0.0 h1:GqA5TC/0021Y/b9FG4Oi9Mr3q7XYx6KllzawFIhcdPw=
 github.com/valyala/bytebufferpool v1.0.0/go.mod h1:6bBcMArwyJ5K/AmCkWv1jt77kVWyCJ6HpOuEn7z0Csc=
 github.com/valyala/fasttemplate v0.0.0-20170224212429-dcecefd839c4 h1:gKMu1Bf6QINDnvyZuTaACm9ofY+PRh+5vFz4oxBZeF8=

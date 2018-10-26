@@ -45,7 +45,7 @@ export interface PostListResponse {
 }
 
 const client = axios.create({
-    baseURL: "http://localhost:1323",
+    baseURL: "http://localhost:1323/api",
     timeout: 3000,
 })
 
