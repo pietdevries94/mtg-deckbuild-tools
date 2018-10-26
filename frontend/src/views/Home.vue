@@ -2,7 +2,8 @@
   <div>
     <list-picker v-model="currentList" />
     <div v-show="currentList != null">
-      <entries-table :entries="entries" :list="currentList" @reload:entries="loadEntriesForList(currentList.id)" />
+      <entry-filters v-model="filteredEntries" :entries="entries" :list="currentList" />
+      <entries-table :entries="filteredEntries" :list="currentList" @reload:entries="loadEntriesForList(currentList.id)" />
     </div>
   </div>
 </template>
@@ -17,13 +18,15 @@ import {
   getListEntries
 } from "@/api.ts";
 import ListPicker from "@/components/ListPicker.vue";
+import EntryFilters from "@/components/EntryFilters.vue";
 
 @Component({
-  components: { EntriesTable, ListPicker }
+  components: { EntriesTable, ListPicker, EntryFilters }
 })
 export default class Home extends Vue {
   private currentList: ListInterface | null = null;
   private entries: EntryInterface[] = [];
+  private filteredEntries: EntryInterface[] = [];
 
   private async loadEntriesForList(listID: number) {
     const res = await getListEntries(listID);
