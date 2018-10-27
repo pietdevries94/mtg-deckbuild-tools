@@ -1,4 +1,5 @@
 import { addCardByName } from "@/add-to-list";
+import importInventory from "./import-inventory";
 
 const createButton = (name: string): HTMLButtonElement => {
     const button = document.createElement('button')
@@ -32,6 +33,8 @@ const fillTable = (mutations: MutationRecord[]) => {
 }
 
 export default () => {
+    importInventory()
+
     const table = document.getElementById('inventory-table') as HTMLTableElement
     if (table === null) return
 
