@@ -151,8 +151,8 @@ func insertSfCard(sfCard scryfall.Card) (Card, error) {
 	card := sfCardToCard(sfCard)
 
 	q := `insert into cards (scryfall_id, set_code, set_number, name, oracle_id,
-		updated_at, thumbnail_url, casting_cost, online_price, buy_link, type_line) 
-		values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+		updated_at, thumbnail_url, casting_cost, online_price, copies_owned, buy_link, type_line) 
+		values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 	_, err := db.Exec(q, card.ScryfallID, card.SetCode, card.SetNumber, card.Name, card.OracleID, card.UpdatedAt,
 		card.ThumbnailURL, card.CastingCost, card.OnlinePrice, card.CopiesOwned, card.BuyLink, card.TypeLine)
 

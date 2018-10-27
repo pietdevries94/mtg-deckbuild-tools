@@ -7,7 +7,7 @@
         :items="['Yes', 'No']"
         :label="tag"
         clearable
-        solo
+        outline
       />
     </v-flex>
   </v-layout>

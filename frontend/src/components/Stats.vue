@@ -209,3 +209,11 @@ export default class Stats extends Vue {
   }
 }
 </script>
+
+<style scoped>
+.align-end {
+  -webkit-box-align: end !important;
+  -ms-flex-align: end !important;
+  align-items: flex-end !important;
+}
+</style>
