@@ -6,6 +6,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/pietdevries94/mtg-deckbuild-tools/backend/domains/card"
 	"github.com/pietdevries94/mtg-deckbuild-tools/backend/domains/entry"
+	"github.com/pietdevries94/mtg-deckbuild-tools/backend/domains/inventory"
 	"github.com/pietdevries94/mtg-deckbuild-tools/backend/domains/list"
 	"github.com/pietdevries94/mtg-deckbuild-tools/backend/domains/tag"
 )
@@ -129,4 +130,12 @@ func getListEntries(c echo.Context) error {
 	return c.JSON(200, getListEntriesResponse{
 		Entries: entries,
 	})
+}
+
+func postInventory(c echo.Context) error {
+	body := c.Request().Body
+	if err := inventory.LoadInventory(body); err != nil {
+		return err
+	}
+	return c.String(203, ``)
 }

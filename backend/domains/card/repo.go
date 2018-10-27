@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"strings"
 	"time"
 
 	scryfall "github.com/BlueMonday/go-scryfall"
@@ -104,10 +105,12 @@ func getCardBySetAndNumber(set, number string) (Card, error) {
 }
 
 func getCardByName(name string) (Card, error) {
+	escapedName := strings.Replace(name, `'`, `''`, -1)
+
 	q := fmt.Sprintf(`SELECT %s
 		FROM cards
 		WHERE name = '%s'`,
-		columns, name)
+		columns, escapedName)
 
 	card, ok, err := getCardFromDB(q)
 	if err != nil {
@@ -183,13 +186,22 @@ func updateSfCard(sfCard scryfall.Card) (Card, error) {
 }
 
 func sfCardToCard(sfCard scryfall.Card) Card {
+	img := ``
+	if sfCard.ImageURIs == nil {
+		if len(sfCard.CardFaces) > 0 {
+			img = sfCard.CardFaces[0].ImageURIs.Normal
+		}
+	} else {
+		img = sfCard.ImageURIs.Normal
+	}
+
 	return Card{
 		ScryfallID:   sfCard.ID,
 		SetCode:      sfCard.Set,
 		SetNumber:    sfCard.CollectorNumber,
 		Name:         sfCard.Name,
 		OracleID:     sfCard.OracleID,
-		ThumbnailURL: sfCard.ImageURIs.Normal,
+		ThumbnailURL: img,
 		CastingCost:  sfCard.ManaCost,
 		OnlinePrice:  sfCard.EUR,
 		BuyLink:      sfCard.PurchaseURIs.MagicCardMarket,
