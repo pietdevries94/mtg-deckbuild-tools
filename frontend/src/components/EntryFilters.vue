@@ -1,12 +1,14 @@
 <template>
   <v-layout row wrap>
+    <v-flex xs2><div class="subheading mt-3">Tag filters</div></v-flex>
     <v-flex xs2 v-for="(tag, index) in list ? list.included_tags : []" :key="index">
       <v-select
         v-model="filters[tag]"
         :items="['Yes', 'No']"
         :label="tag"
         clearable
-      ></v-select>
+        solo
+      />
     </v-flex>
   </v-layout>
 </template>

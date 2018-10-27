@@ -84,6 +84,7 @@ export default class EntriesTable extends Vue {
     sortable?: boolean;
   }[] = [];
 
+  @Watch("list.included_tags")
   @Watch("entries")
   private setHeaders() {
     if (!this.list) return;

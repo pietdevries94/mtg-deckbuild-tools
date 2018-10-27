@@ -25,6 +25,7 @@
           v-model="newList"
           :append-icon="newList ? 'add_circle' : ''"
           @click:append="addList"
+          @keyup.enter="addList"
           @click:clear="newList = null"
           label="New list"
           placeholder="New list"
@@ -116,6 +117,7 @@ export default class ListPicker extends Vue {
     await deleteList(this.currentList!.id);
     this.deleteDialog = false;
     this.currentList = null;
+    this.loadLists();
   }
 
   private mounted() {
