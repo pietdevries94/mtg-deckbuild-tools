@@ -27,6 +27,8 @@ func main() {
 	api.POST("/list", postList)
 	api.POST("/inventory", postInventory)
 
+	api.PUT("/entry/:scryfall_id/:list_id/board", putEntryBoard)
+
 	api.DELETE("/entry/:scryfall_id/:list_id", deleteEntry)
 	api.DELETE("/list/:id", deleteList)
 

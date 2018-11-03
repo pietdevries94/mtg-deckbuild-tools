@@ -61,6 +61,20 @@ func GetEntriesForList(listID int) ([]Entry, error) {
 	return getTagsAndCardForEntries(entries)
 }
 
+func SetBoardForEntry(scryfallID string, listID int, board string) error {
+	entry := Entry{
+		ScryfallID: scryfallID,
+		ListID:     listID,
+	}
+
+	id, ok := getEntryID(entry)
+	if !ok {
+		return ErrEntryNotFound
+	}
+
+	return setBoardForEntry(id, board)
+}
+
 func getTagsAndCardForEntries(entries []Entry) ([]Entry, error) {
 	for i, entry := range entries {
 		t, err := tag.GetTagsForEntryID(entry.ID)

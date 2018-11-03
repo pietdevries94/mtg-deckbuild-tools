@@ -102,7 +102,7 @@ func deleteEntry(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	return c.String(201, ``)
+	return c.NoContent(201)
 }
 
 func deleteList(c echo.Context) error {
@@ -114,7 +114,7 @@ func deleteList(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	return c.String(201, ``)
+	return c.NoContent(201)
 }
 
 func getListEntries(c echo.Context) error {
@@ -137,5 +137,26 @@ func postInventory(c echo.Context) error {
 	if err := inventory.LoadInventory(body); err != nil {
 		return err
 	}
-	return c.String(203, ``)
+	return c.NoContent(203)
+}
+
+func putEntryBoard(c echo.Context) error {
+	scryfallID, listStringID := c.Param(`scryfall_id`), c.Param(`list_id`)
+	listID, err := strconv.Atoi(listStringID)
+	if err != nil {
+		return err
+	}
+
+	type data struct {
+		Board string `json:"board"`
+	}
+
+	d := data{}
+	c.Bind(&d)
+
+	if err := entry.SetBoardForEntry(scryfallID, listID, d.Board); err != nil {
+		return err
+	}	
+
+	return c.NoContent(200)
 }

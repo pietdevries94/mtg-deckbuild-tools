@@ -23,7 +23,7 @@ func selectQuery(q string) ([]Entry, error) {
 	entries := []Entry{}
 	for rows.Next() {
 		e := Entry{}
-		err := rows.Scan(&e.ID, &e.ListID, &e.ScryfallID)
+		err := rows.Scan(&e.ID, &e.ListID, &e.ScryfallID, &e.Board)
 		util.PanicOnErr(err)
 		entries = append(entries, e)
 	}
@@ -32,20 +32,20 @@ func selectQuery(q string) ([]Entry, error) {
 }
 
 func getEntriesForCard(scryfallID string) ([]Entry, error) {
-	q := fmt.Sprintf(`select id, list_id, scryfall_id from entries where scryfall_id = '%s'`, scryfallID)
+	q := fmt.Sprintf(`select id, list_id, scryfall_id, board from entries where scryfall_id = '%s'`, scryfallID)
 	return selectQuery(q)
 }
 
 func getEntriesForList(listID int) ([]Entry, error) {
-	q := fmt.Sprintf(`select id, list_id, scryfall_id from entries where list_id = %d`, listID)
+	q := fmt.Sprintf(`select id, list_id, scryfall_id, board from entries where list_id = %d`, listID)
 	return selectQuery(q)
 }
 
 func insertEntry(entry Entry) (int, error) {
 	db := data.GetDB()
 
-	q := `insert into entries (scryfall_id, list_id) values (?, ?)`
-	res, err := db.Exec(q, entry.ScryfallID, entry.ListID)
+	q := `insert into entries (scryfall_id, list_id, board) values (?, ?, ?)`
+	res, err := db.Exec(q, entry.ScryfallID, entry.ListID, entry.Board)
 	if err != nil {
 		return 0, err
 	}
@@ -157,5 +157,12 @@ func deleteEntry(id int) error {
 	}
 
 	_, err := db.Exec(`delete from entries where id = ?`, id)
+	return err
+}
+
+func setBoardForEntry(entryID int, board string) error {
+	db := data.GetDB()
+
+	_, err := db.Exec(`update entries set board = ? where id = ?`, board, entryID)
 	return err
 }
