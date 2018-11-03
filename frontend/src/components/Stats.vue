@@ -1,6 +1,6 @@
 <template>
   <v-layout row wrap class="mt-3" v-show="entries.length">
-    <v-flex xs3>
+    <v-flex xs2>
       <v-card>
         <v-card-title><h4>Types</h4></v-card-title>
         <v-divider />
@@ -17,7 +17,7 @@
         </v-list>
       </v-card>
     </v-flex>
-    <v-flex xs3>
+    <v-flex xs2>
       <v-card>
         <v-card-title><h4>Tags</h4></v-card-title>
         <v-divider />
@@ -29,7 +29,7 @@
         </v-list>
       </v-card>
     </v-flex>
-    <v-flex xs3>
+    <v-flex xs2>
       <v-card>
         <v-card-title><h4>Converted Mana Cost</h4></v-card-title>
         <v-divider />
@@ -42,7 +42,7 @@
         </v-list>
       </v-card>
     </v-flex>
-    <v-flex xs3>
+    <v-flex xs2>
       <v-card>
         <v-card-title><h4>Colors</h4></v-card-title>
         <v-divider />
@@ -58,6 +58,21 @@
           </v-list-tile>
         </v-list>
       </v-card>
+    </v-flex>
+    <v-flex xs2>
+      <v-card>
+        <v-card-title><h4>Value</h4></v-card-title>
+        <v-divider />
+        <v-list dense>
+          <v-list-tile v-for="(amount, key) in stats.value" :key="key + 'card'">
+            <v-list-tile-content>{{key}} cards</v-list-tile-content>
+            <v-list-tile-content class="align-end">€ {{amount}}</v-list-tile-content>
+          </v-list-tile>
+        </v-list>
+      </v-card>
+    </v-flex>
+    <v-flex xs2>
+      <slot />
     </v-flex>
   </v-layout>
 </template>
@@ -76,6 +91,7 @@ interface stats {
   cmc: statsCat;
   colorCards: statsCat;
   colorSymbols: statsCat;
+  value: statsCat;
 }
 
 @Component
@@ -89,7 +105,11 @@ export default class Stats extends Vue {
       tags: {},
       cmc: {},
       colorCards: {},
-      colorSymbols: {}
+      colorSymbols: {},
+      value: {
+        Unowned: 0,
+        All: 0
+      }
     };
     let maxCMC = 0;
 
@@ -125,6 +145,13 @@ export default class Stats extends Vue {
         stats.colorCards["Colorless"] = this.addToUnknown(
           stats.colorCards["Colorless"]
         );
+      }
+
+      // Value
+      const price = Number(entry.card.online_price);
+      if (!isNaN(price)) {
+        stats.value.All += price;
+        if (entry.card.copies_owned === 0) stats.value.Unowned += price;
       }
     });
 

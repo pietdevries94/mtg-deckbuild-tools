@@ -5,7 +5,9 @@
       <list-tagger v-model="currentListTags" />
       <entry-filters v-model="filteredEntries" :entries="entries" :list="currentList" />
       <entries-table :entries="filteredEntries" :list="currentList" @reload:entries="loadEntriesForList(currentList.id)" />
-      <stats label="List stats" :entries="filteredEntries" />
+      <stats label="List stats" :entries="filteredEntries">
+        <copy-current-list :entries="filteredEntries" />
+      </stats>
     </div>
   </div>
 </template>
@@ -23,9 +25,17 @@ import ListPicker from "@/components/ListPicker.vue";
 import EntryFilters from "@/components/EntryFilters.vue";
 import ListTagger from "@/components/ListTagger.vue";
 import Stats from "@/components/Stats.vue";
+import CopyCurrentList from "@/components/CopyCurrentList.vue";
 
 @Component({
-  components: { EntriesTable, ListPicker, EntryFilters, ListTagger, Stats }
+  components: {
+    EntriesTable,
+    ListPicker,
+    EntryFilters,
+    ListTagger,
+    Stats,
+    CopyCurrentList
+  }
 })
 export default class Home extends Vue {
   private currentList: ListInterface | null = null;

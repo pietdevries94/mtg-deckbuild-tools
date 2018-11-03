@@ -1,7 +1,6 @@
 <template>
   <v-layout row wrap>
-    <v-flex xs2><div class="subheading mt-3">Add tags</div></v-flex>
-    <v-flex xs2>
+    <v-flex offset-xs4 xs2>
       <v-select
         v-model="tagSelect"
         :items="unusedTags"
