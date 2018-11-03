@@ -82,6 +82,19 @@ func addCardCacheFromScryfallByName(name string) (Card, error) {
 		return Card{}, err
 	}
 
+	var db = data.GetDB()
+
+	row := db.QueryRow(`select count(*) from cards where scryfall_id = ?`, sfCard.ID)
+	amount := 0
+	err = row.Scan(&amount)
+	if err != nil {
+		return Card{}, err
+	}
+
+	if amount > 0 {
+		return getCardByScryfallID(sfCard.ID)
+	}
+
 	return insertSfCard(sfCard)
 }
 

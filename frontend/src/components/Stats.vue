@@ -47,12 +47,12 @@
         <v-card-title><h4>Colors</h4></v-card-title>
         <v-divider />
         <v-list dense>
-          <v-list-tile v-for="(amount, key) in stats.colorCards" :key="key">
+          <v-list-tile v-for="(amount, key) in stats.colorCards" :key="key + 'card'">
             <v-list-tile-content>{{key}} cards</v-list-tile-content>
             <v-list-tile-content class="align-end">{{amount}}</v-list-tile-content>
           </v-list-tile>
           <v-divider />
-          <v-list-tile v-for="(amount, key) in stats.colorSymbols" :key="key">
+          <v-list-tile v-for="(amount, key) in stats.colorSymbols" :key="key + 'cast'">
             <v-list-tile-content>{{key}} casting symbols</v-list-tile-content>
             <v-list-tile-content class="align-end">{{amount}}</v-list-tile-content>
           </v-list-tile>

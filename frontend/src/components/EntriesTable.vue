@@ -24,6 +24,7 @@
             />
           </td>
 
+          <td class="text-xs-left">{{ props.item.card.copies_owned }}</td>
           <td class="text-xs-left">€ {{ props.item.card.online_price }}</td>
           
           <td>
@@ -104,6 +105,7 @@ export default class EntriesTable extends Vue {
     });
 
     this.headers.push(
+      { text: "Owned Copies", value: "card.copies_owned" },
       { text: "Price", value: "card.online_price" },
       { text: "Actions", value: "id", align: "center" }
     );

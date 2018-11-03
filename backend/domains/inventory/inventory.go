@@ -29,6 +29,11 @@ func parseRecords(records [][]string) {
 		util.PanicOnErr(err)
 		c, err := card.GetCardByName(record[1])
 		util.PanicOnErr(err)
+
+		if c.CopiesOwned == amount {
+			continue
+		}
+
 		err = SetCopiesOwned(c.ScryfallID, amount)
 		util.PanicOnErr(err)
 	}
