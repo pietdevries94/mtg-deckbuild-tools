@@ -15,6 +15,14 @@
 
           <td class="text-xs-left"><mana-cost :value="props.item.card.casting_cost" /></td>
           <td class="text-xs-left">{{ props.item.card.type_line }}</td>
+          <td class="text-xs-left">
+            <v-select
+              v-model="props.item.board"
+              :items="['main', 'side', 'maybe', '']"
+              @change="setBoard(props.item.scryfall_id, props.item.list_id, props.item.board)"
+              class="select-width"
+            />
+          </td>
 
           <td class="text-xs-left" v-for="(tag, index) in list.included_tags ? list.included_tags : []" :key="index">
             <v-checkbox
@@ -65,7 +73,8 @@ import {
   CardInterface,
   ListInterface,
   deleteEntry,
-  postEntry
+  postEntry,
+  putEntryBoard
 } from "@/api";
 import ManaCost from "@/components/ManaCost.vue";
 
@@ -93,7 +102,8 @@ export default class EntriesTable extends Vue {
     this.headers = [
       { text: "Name", value: "card.name" },
       { text: "Cost", value: "card.casting_cost" },
-      { text: "Type", value: "card.type_line" }
+      { text: "Type", value: "card.type_line" },
+      { text: "Board", value: "board" }
     ];
 
     this.list.included_tags.forEach((tag, index) => {
@@ -137,6 +147,11 @@ export default class EntriesTable extends Vue {
     this.$emit("reload:entries");
   }
 
+  private async setBoard(scryfallID: string, listID: number, board: string) {
+    await putEntryBoard(scryfallID, listID, board);
+    this.$emit("reload:entries");
+  }
+
   private created() {
     this.setHeaders();
   }
@@ -156,5 +171,9 @@ export default class EntriesTable extends Vue {
 
 .deletebtn {
   margin-left: 20px;
+}
+
+.select-width {
+  width: 100px;
 }
 </style>

@@ -27,6 +27,7 @@ export interface EntryInterface {
   list_id: number;
   tags: string[];
   card: CardInterface;
+  board: string;
 }
 
 export interface GetCardResponse {
@@ -52,6 +53,12 @@ export interface PostListPayload {
 
 export interface PostListResponse {
   id: number;
+}
+
+export interface PutEntryBoardInterface {
+  scryfall_id: string;
+  list_id: number;
+  board: string;
 }
 
 const client = axios.create({
@@ -127,4 +134,14 @@ export function deleteEntry(scryfallID: string, listID: number) {
 
 export function deleteList(listID: number) {
   return client.delete("/list/" + listID);
+}
+
+export function putEntryBoard(
+  scryfallID: string,
+  listID: number,
+  board: string
+) {
+  return client.put<void>("/entry/" + scryfallID + "/" + listID + "/board", {
+    board
+  });
 }
