@@ -24,7 +24,7 @@ export default () => {
 
     const btn = createButton(path[2])
 
-    const col = document.getElementsByClassName('well')[1]!.getElementsByClassName('col-lg-3')[2]!
+    const col = document.getElementsByClassName('well')[2]!.getElementsByClassName('col-lg-3')[2]!.getElementsByTagName('p')[0]!
     col.innerHTML = ''
     col.appendChild(btn)
 
