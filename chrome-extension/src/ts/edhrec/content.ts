@@ -44,9 +44,7 @@ const processCards = () => {
         if (!codeAndNumber.ok) continue
 
         const buttonWrapper = createButtonWrapper(codeAndNumber.code, codeAndNumber.number)
-        card.appendChild(buttonWrapper)
-
-        card.style.height = (card.offsetHeight + buttonWrapper.offsetHeight) + 'px'
+        card.parentElement!.after(buttonWrapper)
 
         processedCards.push(card)
     }
