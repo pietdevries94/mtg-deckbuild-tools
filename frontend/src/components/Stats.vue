@@ -66,7 +66,7 @@
         <v-list dense>
           <v-list-tile v-for="(amount, key) in stats.value" :key="key + 'card'">
             <v-list-tile-content>{{key}} cards</v-list-tile-content>
-            <v-list-tile-content class="align-end">€ {{amount}}</v-list-tile-content>
+            <v-list-tile-content class="align-end">€ {{amount.toFixed(2)}}</v-list-tile-content>
           </v-list-tile>
         </v-list>
       </v-card>

@@ -2,6 +2,7 @@ package inventory
 
 import (
 	"encoding/csv"
+	"fmt"
 	"io"
 	"strconv"
 
@@ -25,10 +26,13 @@ func parseRecords(records [][]string) {
 		if i == 0 {
 			continue
 		}
+		fmt.Printf("Parsing: %s\n", record[1])
 		amount, err := strconv.Atoi(record[0])
 		util.PanicOnErr(err)
 		c, err := card.GetCardByName(record[1])
 		util.PanicOnErr(err)
+
+		fmt.Printf("Old: %d | New: %d\n", c.CopiesOwned, amount)
 
 		if c.CopiesOwned == amount {
 			continue
@@ -36,5 +40,7 @@ func parseRecords(records [][]string) {
 
 		err = SetCopiesOwned(c.ScryfallID, amount)
 		util.PanicOnErr(err)
+
+		fmt.Printf("Updated %s\n", record[1])
 	}
 }
